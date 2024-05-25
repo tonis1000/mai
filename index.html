@@ -4,96 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub TV</title>
-    
-    <link rel="stylesheet" type="text/css" href="styles.css"> <!-- Hier wird die CSS-Datei verlinkt -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
-
-
-    
 </head>
 <body>
-    
- <div class="main-container">
-    <div class="container">
-        <div class="info-panel">
-            <div class="info-group">
-                <span id="tag"></span>
+    <div class="main-container">
+        <div class="container">
+            <div class="info-panel">
+                <div class="info-group">
+                    <span id="tag"></span>
+                </div>
+                <div class="info-group">
+                    <span id="datum"></span>
+                </div>
+                <div class="info-group">
+                    <span id="uhrzeit"></span>
+                </div>
             </div>
-            <div class="info-group">
-                <span id="datum"></span>
-            </div>
-            <div class="info-group">
-                <span id="uhrzeit"></span>
+            <div class="button-row">
+                <button id="myPlaylist">My Playlist</button>
+                <button id="externalPlaylist">Ext. Playlist</button>
+                <button id="sportPlaylist">Sport</button>
             </div>
         </div>
-
-        <div class="button-row">
-            <button id="myPlaylist">My Playlist</button>
-            <button id="externalPlaylist">Ext. Playlist</button>
-            <button id="sportPlaylist">Sport</button>
+        <div class="sidebar">
+            <h2>Senderliste</h2>
+            <div class="sidebar-content">
+                <ul id="sidebar-list"></ul>
+            </div>
         </div>
     </div>
-<!-- Sidebar für die Senderliste -->
-    <div class="sidebar">
-        <h2>Senderliste</h2> <!-- Überschrift der Sidebar -->
-        <div class="sidebar-content"> <!-- Bereich für scrollbar Inhalt -->
-            <ul id="sidebar-list">
-                <!-- Platzhalter für Senderinformationen, die dynamisch hinzugefügt werden -->
-                <li>
-                    <div class="channel-info" data-stream="STREAM_URL_DES_SENDERS"> <!-- Datenattribut für den Stream-URL -->
-
-                        <!-- Logo-Container für Bild oder Text -->
-                        <div class="logo-container">
-                            <img src="logo.png" alt="Logo"> <!-- Beispiel-Bild -->
-                        </div>
-                        <span class="sender-name">Name</span> <!-- Name des Senders -->
-                        <span class="epg-channel">
-                            <span>Titel</span> <!-- Sendungstitel -->
-                            <!-- Zeitachse für das laufende Programm -->
-                            <div class="epg-timeline">
-                                <!-- Abschnitt, der bereits gesendet wurde -->
-                                <div class="epg-past"></div>
-                                <!-- Abschnitt, der noch gesendet wird -->
-                                <div class="epg-future"></div>
-                            </div>
-                        </span>
-                    </div>
-                </li>
-                <!-- Weitere <li> Elemente hier einfügen -->
-            </ul>
+    <div class="content-wrapper">
+        <div class="player-container">
+            <div class="player-header">
+                <span id="current-channel-name">Aktueller Sender</span>
+                <input type="text" id="stream-url" placeholder="Stream URL eingeben">
+                <label for="subtitle-file" style="cursor: pointer;">SRT</label>
+                <input type="file" id="subtitle-file" accept=".srt" style="display: none;">
+                <button id="play-button">Play</button>
+            </div>
+            <video id="video-player" controls>
+                <track id="subtitle-track" kind="subtitles" srclang="el" label="Griechisch" default>
+            </video>
+            <div id="program-info">
+                <h4 id="program-title"></h4>
+                <p id="program-desc"></p>
+            </div>
+        </div>
+        <div id="additionalContent">
+            
+            <iframe src="https://foothubhd.xyz/" frameborder="0"></iframe>
         </div>
     </div>
-   </div>  
-    </div> 
-
-
-  <!-- Neuer Bereich für den Video-Player --> 
-    <div class="player-container">
-
-        <div class="player-header">
-        <span id="current-channel-name" style="font-size: 26px;">Aktueller Sender</span>
-        <input type="text" id="stream-url" placeholder="Stream URL eingeben" style="width: 660px;">
-        <label for="subtitle-file" style="cursor: pointer;">SRT</label>
-        <input type="file" id="subtitle-file" accept=".srt" style="display: none;">
-        <button id="play-button">Play</button>
-       </div>
-        
-       <video id="video-player" controls>
-       <track id="subtitle-track" kind="subtitles" srclang="el" label="Griechisch" default>
-       </video>
-      <div id="program-info">
-        <h4 id="program-title"></h4>
-        <p id="program-desc"></p>
-     </div>   
-    </div>
-        
-     
-    
-</div>
-
-
-    
     <script src="scripts.js"></script>
 </body>
 </html>
