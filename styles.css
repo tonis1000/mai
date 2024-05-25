@@ -94,6 +94,11 @@ button:hover {
     background-color: #333;
 }
 
+/* Fügt rechtes Padding für das erste span-Element innerhalb des dritten span-Elements in einem div in li hinzu */
+#sidebar-list li > div > span:nth-child(3) > span:nth-child(1) {
+    padding-right: 10px;
+}
+
 /* Stil für die Senderinformationen innerhalb der Sidebar */
 .channel-info {
     display: flex;
@@ -224,6 +229,30 @@ button:hover {
 #current-channel-name {
     font-size: 26px;
 }
+
+
+/* Wrapper für den Player und zusätzlichen Inhalt, um sie nebeneinander zu platzieren */
+.content-wrapper {
+    display: flex;
+    gap: 20px; /* Abstand zwischen dem Player und dem zusätzlichen Inhalt */
+    margin-top: 20px;
+}
+
+/* Zusätzlicher Inhalt rechts neben dem Player */
+#additionalContent {
+    width: 400px; /* Breite des zusätzlichen Inhalts */
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#additionalContent iframe {
+    width: 100%; /* Iframe passt sich der Breite des Containers an */
+    height: 500px; /* Feste Höhe für das Iframe */
+}
+
 
 #stream-url {
     width: 750px;
