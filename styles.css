@@ -104,7 +104,7 @@ button:hover {
 }
 
 .logo-container {
-    width: 350px; /* Breite des Logo-Containers */
+    width: 35px; /* Breite des Logo-Containers */
     display: flex;
     justify-content: center;
     align-items: center;
