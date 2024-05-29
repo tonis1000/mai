@@ -257,3 +257,37 @@ button:hover {
 #stream-url {
     width: 750px;
 }
+
+
+.next-program {
+    margin-top: 2px;
+    margin-bottom: 2px; /* Ändere den Abstand zwischen den Programmen nach Bedarf */
+}
+
+div.next-program p {
+    margin-top: 0px;
+}
+
+div.next-program h4 {
+    margin-top: 0px;
+}
+
+.next-program-title {
+    font-weight: bold;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+.next-program-desc {
+    margin-bottom: 2px;
+}
+
+.expandable {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.expandable.expanded {
+    max-height: 1000px; /* oder eine andere geeignete Höhe */
+}
