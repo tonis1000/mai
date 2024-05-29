@@ -116,6 +116,73 @@ return {
     return { title: 'Keine EPG-Daten verfügbar', description: 'Keine Beschreibung verfügbar', pastPercentage: 0, futurePercentage: 0 };
 }
 
+
+
+// Funktion zum Aktualisieren der nächsten Programme
+function updateNextPrograms(channelId) {
+    const nextProgramsContainer = document.getElementById('next-programs');
+    nextProgramsContainer.innerHTML = ''; // Leert den Container, um die neuen Programme einzufügen
+
+    if (epgData[channelId]) {
+        const now = new Date();
+        const upcomingPrograms = epgData[channelId]
+            .filter(prog => prog.start > now) // Filtert nur Programme, die in der Zukunft liegen
+            .slice(0, 4); // Begrenzt auf die nächsten 4 Programme
+
+        upcomingPrograms.forEach(program => {
+            const nextProgramDiv = document.createElement('div');
+            nextProgramDiv.classList.add('next-program');
+
+            const nextProgramTitle = document.createElement('h4');
+            nextProgramTitle.classList.add('next-program-title'); // Korrigierte CSS-Klasse
+            const start = program.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Startzeit des nächsten Programms
+            const end = program.stop.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Endzeit des nächsten Programms
+            const title = program.title.replace(/\s*\[.*?\]\s*/g, '').replace(/[\[\]]/g, ''); // Titel ohne den Teil in eckigen Klammern
+            nextProgramTitle.textContent = `${title} (${start} - ${end})`;
+
+            const nextProgramDesc = document.createElement('p');
+            nextProgramDesc.classList.add('next-program-desc'); // Korrigierte CSS-Klasse
+            nextProgramDesc.classList.add('expandable'); // Fügt die Klasse für das Aufklappen hinzu
+            nextProgramDesc.textContent = program.desc || 'Keine Beschreibung verfügbar';
+
+            nextProgramDiv.appendChild(nextProgramTitle);
+            nextProgramDiv.appendChild(nextProgramDesc);
+
+            nextProgramTitle.addEventListener('click', function() {
+                // Toggle für das Aufklappen der Beschreibung
+                nextProgramDesc.classList.toggle('expanded');
+            });
+
+            nextProgramsContainer.appendChild(nextProgramDiv);
+        });
+    }
+}
+
+
+
+
+// Im Event-Handler für den Klick auf einen Sender
+const sidebarList = document.getElementById('sidebar-list');
+sidebarList.addEventListener('click', function (event) {
+    const channelInfo = event.target.closest('.channel-info');
+    if (channelInfo) {
+        const channelId = channelInfo.dataset.channelId;
+        const programInfo = getCurrentProgram(channelId);
+
+        // Aktualisiert den Player mit der aktuellen Sendung
+        setCurrentChannel(channelInfo.querySelector('.sender-name').textContent, channelInfo.dataset.stream);
+        playStream(channelInfo.dataset.stream);
+
+        // Aktualisiert die Programmbeschreibung
+        updatePlayerDescription(programInfo.title, programInfo.description);
+
+        // Aktualisiert die nächsten Programme
+        updateNextPrograms(channelId);
+    }
+});
+
+
+
 // Funktion zum Aktualisieren des Players mit der Programmbeschreibung
 function updatePlayerDescription(title, description) {
     document.getElementById('program-title').textContent = title;
