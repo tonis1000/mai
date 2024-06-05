@@ -1,14 +1,26 @@
 /* Grundlegende Farben und Schriftgrößen als wiederverwendbare Klassen */
+body {
+    background-color: #333;
+}
+
 .base-background {
     background-color: #333;  /* Dunkelgrauer Hintergrund für Container und Sidebar */
+}
+
+/* Stil für den "online" Zustand */
+.online {
+    color: lightgreen;
+    font-weight: bold;
 }
 
 .text-white {
     color: #ffffff;  /* Weiße Schriftfarbe für übergreifende Textelemente */
 }
 
+/* Hauptcontainer */
 .main-container {
     float: left;
+    margin-right: 10px;
 }
 
 /* Hauptcontainer mit spezifischen Maßen und Layout-Einstellungen */
@@ -16,20 +28,18 @@
     border-top: 5px solid transparent;
     font-size: 16px;
     background-color: #333;
-    margin-right: 10px;
+    border-top-width: 0px;
+    padding-top: 5px;
 }
 
 /* Styling für Informationen und Button-Reihen innerhalb des Containers */
 .info-panel, .button-row {
     display: flex;
-    width: 310px;  /* Etwas schmaler als der Hauptcontainer für visuelle Trennung */
     padding-left: 15px;
 }
 
 .info-panel {
-    font-size: 21px;
     font-style: italic;
-    font-weight: 500;
 }
 
 .button-row {
@@ -46,25 +56,38 @@
 
 /* Einheitliche Button-Stile */
 button {
-    background-color: #007bff;  /* Blaue Farbe für Buttons */
+    background-color: #444;  /* Dunkelgraue Farbe für Buttons */
     color: #fff;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid #ccc;  /* Dezente Umrandung */
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
-    background-color: #0056b3;  /* Dunklerer Blauton bei Hover */
+    background-color: #555;  /* Dunklerer Grauton bei Hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    background-color: #666;  /* Noch dunklerer Grauton bei Aktivierung */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(2px);  /* Leichte Verschiebung nach unten bei Aktivierung */
+}
+
+/* Stil für deaktivierte Buttons */
+button:disabled {
+    background-color: #cccccc;  /* Grauer Farbton für deaktivierte Buttons */
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 /* Sidebar-Styling mit spezifischen Maßen und Layout-Einstellungen */
 .sidebar {
-    width: 350px;
     height: 740px;
-    padding: 10px;
-    margin-top: 2px;
-    margin-bottom: 5px;
 }
 
 .sidebar h2 {
@@ -78,13 +101,18 @@ button:hover {
     overflow-y: auto;
     height: calc(100% - 40px);
     background-color: #0f0e0e;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-top: 0px;
+    border-top-width: 5px;
+    border-top-style: solid;
 }
 
 /* Sidebar-Listenstil ohne Bullet Points */
 #sidebar-list {
     list-style-type: none;
     padding: 0;
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 #sidebar-list li {
@@ -97,6 +125,8 @@ button:hover {
 /* Fügt rechtes Padding für das erste span-Element innerhalb des dritten span-Elements in einem div in li hinzu */
 #sidebar-list li > div > span:nth-child(3) > span:nth-child(1) {
     padding-right: 10px;
+    padding-left: 10px;
+    
 }
 
 /* Stil für die Senderinformationen innerhalb der Sidebar */
@@ -109,8 +139,7 @@ button:hover {
 }
 
 .logo-container {
-    width: 35px; /* Breite des Logo-Containers */
-    display: flex;
+    width: 30px; /* Breite des Logo-Containers */
     justify-content: center;
     align-items: center;
     overflow: hidden;
@@ -136,6 +165,7 @@ button:hover {
     font-size: 12px;
     color: #ffffff;
     flex: 1; /* Alle inneren Elemente gleichmäßig verteilen */
+    width: 120px;
 }
 
 .epg-channel span {
@@ -146,9 +176,8 @@ button:hover {
 .epg-timeline {
     display: flex;
     height: 5px; /* Erhöhe die Höhe für eine bessere Sichtbarkeit */
-    width: 180px;
-    background-color: #666; /* Hintergrundfarbe der Zeitachse für den Fall, dass keine Farben angezeigt werden */
     border-radius: 2px; /* Abrundung der Ecken */
+    padding-right: 15px;
 }
 
 #sidebar-list li > div > span:nth-child(3) {
@@ -174,26 +203,83 @@ button:hover {
     flex-direction: column; /* Ändert das Layout zu einer Spalte */
 }
 
+/* Grundlegende Stile für die Player-Header */
 .player-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 10px;
     background-color: #333;
     color: #fff;
     border-bottom: 1px solid #ccc;
+    height: auto;
 }
 
-.player-header input {
+/* Spezifische Stile für das Logo im Player-Bereich */
+.player-logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;  /* Breite des Logos im Player-Bereich */
+    height: 100px; /* Höhe des Logos im Player-Bereich */
+}
+
+.player-logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Container für Sendername, SRT-Label und Eingabefeld */
+.player-info-container {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     margin-left: 10px;
+}
+
+/* Container für den Sendername und das SRT-Label */
+.player-info-top {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+/* Stil für den Sendername */
+#current-channel-name {
+    font-size: 35px; /* Größe des Sendernamens */
+    color: #ffffff; /* Farbe des Sendernamens */
+}
+
+/* Stil für den SRT-Label */
+label[for="subtitle-file"] {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+/* Container für das Eingabefeld und den Play-Button */
+.player-info-bottom {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* Stil für den Stream URL Input */
+#stream-url {
+    flex: 1;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-right: 10px;
 }
 
-.player-header button {
-    margin-left: 10px;
+/* Stil für den Play-Button */
+#play-button {
     padding: 5px 10px;
     background-color: #007bff;
     color: #fff;
@@ -202,66 +288,65 @@ button:hover {
     cursor: pointer;
 }
 
-.player-header button:hover {
+#play-button:hover {
     background-color: #0056b3;
 }
-
-.play-button {
-    margin-bottom: 10px;
-    margin-left: 10px;
-}
-
-.video-player {
-    width: 900px;
-    position: fixed;
-    bottom: 5px;
-    right: 5px;
-    z-index: 1000;
-    display: flex;
-    height: 700px;
-}
-
-.online {
-    color: lightgreen;
-    font-weight: bold;
-}
-
-#current-channel-name {
-    font-size: 26px;
-}
-
 
 /* Wrapper für den Player und zusätzlichen Inhalt, um sie nebeneinander zu platzieren */
 .content-wrapper {
     display: flex;
     gap: 20px; /* Abstand zwischen dem Player und dem zusätzlichen Inhalt */
-    margin-top: 20px;
 }
 
 /* Zusätzlicher Inhalt rechts neben dem Player */
-#additionalContent {
-    width: 400px; /* Breite des zusätzlichen Inhalts */
-    padding: 10px;
+.additional-content {
+    margin-top: 20px;
     background-color: #333;
     color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
+    width: 400px; /* Breite der Überschrift */
 }
 
-#additionalContent iframe {
-    width: 100%; /* Iframe passt sich der Breite des Containers an */
-    height: 500px; /* Feste Höhe für das Iframe */
+/* Stil für die Überschriften "Foothubhd" und "Wetter" */
+.content-title {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff; /* Weiße Schriftfarbe */
+    background-color: #007bff; /* Blaue Hintergrundfarbe */
+    border-radius: 5px;
+    margin-bottom: 10px; /* Abstand zum nächsten Inhalt */
+}
+
+.content-title:hover {
+    background-color: #0056b3; /* Dunklere Blauton bei Hover */
 }
 
 
-#stream-url {
-    width: 750px;
+.content-body {
+    padding: 0 10px;
+    overflow: auto; /* Falls der Inhalt zu groß ist */
+    transition: height 0.3s ease; /* Animiere die Höhe beim Aufklappen und Zuklappen */
+    height: 0; /* Verstecke den Inhalt standardmäßig */
+    width: 300px; /* Breite des Inhalts nach dem Aufklappen */
 }
 
+.expanded {
+    height: 700px !important; /* Höhe des Inhalts nach dem Aufklappen */
+}
 
+/* Stil für Programminformationen */
+#program-info {
+    color: #ffffff;
+}
+
+/* Stil für das nächste Programm */
 .next-program {
     margin-top: 2px;
     margin-bottom: 2px; /* Ändere den Abstand zwischen den Programmen nach Bedarf */
+    color: #ffffff;
 }
 
 div.next-program p {
@@ -290,4 +375,51 @@ div.next-program h4 {
 
 .expandable.expanded {
     max-height: 1000px; /* oder eine andere geeignete Höhe */
+}
+
+/* Medienabfragen für verschiedene Geräte und Bildschirmgrößen */
+
+/* Für Smartphones im Hochformat */
+@media only screen and (max-width: 480px) {
+    .player-container {
+        width: 100%; /* Breite auf 100% setzen */
+    }
+    .content-wrapper {
+        flex-direction: column; /* Anordnung in Spalte ändern */
+    }
+}
+
+/* Für Smartphones im Querformat */
+@media only screen and (min-width: 481px) and (max-width: 800px) {
+    .player-container {
+        width: 100%; /* Breite auf 100% setzen */
+    }
+    .content-wrapper {
+        flex-direction: column; /* Anordnung in Spalte ändern */
+    }
+}
+
+/* Für Tablets */
+@media only screen and (min-width: 801px) and (max-width: 1024px) {
+    .player-container {
+        width: 100%; /* Breite auf 100% setzen */
+    }
+    .content-wrapper {
+        flex-direction: column; /* Anordnung in Spalte ändern */
+    }
+}
+
+/* Für Desktops und größere Bildschirme */
+@media only screen and (min-width: 1025px) {
+    .player-container {
+        width: 900px; /* Feste Breite */
+    }
+    .content-wrapper {
+        flex-direction: row; /* Anordnung in Reihe */
+    }
+}
+.example {
+    -webkit-transform: rotate(30deg); /* Chrome, Safari */
+    -ms-transform: rotate(30deg); /* Internet Explorer */
+    transform: rotate(30deg);
 }
