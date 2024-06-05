@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,12 +23,12 @@
                 </div>
             </div>
             <div class="button-row">
-                <button id="myPlaylist">My Playlist</button>
-                <button id="externalPlaylist">Ext. Playlist</button>
+                <button id="myPlaylist">Meine Playlist</button>
+                <button id="externalPlaylist">Externe Playlist</button>
                 <button id="sportPlaylist">Sport</button>
             </div>
         </div>
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <h2>Senderliste</h2>
             <div class="sidebar-content">
                 <ul id="sidebar-list"></ul>
@@ -37,13 +37,28 @@
     </div>
     <div class="content-wrapper">
         <div class="player-container">
+
             <div class="player-header">
-                <span id="current-channel-name">Aktueller Sender</span>
-                <input type="text" id="stream-url" placeholder="Stream URL eingeben">
-                <label for="subtitle-file" style="cursor: pointer;">SRT</label>
-                <input type="file" id="subtitle-file" accept=".srt" style="display: none;">
-                <button id="play-button">Play</button>
+                <div class="logo-container player-logo-container">
+                    <img id="current-channel-logo" alt="Senderlogo">
+                </div>
+                <div class="player-info-container">
+                    <div class="player-info-top">
+                        <span id="current-channel-name">Aktueller Sender</span>
+                        <button id="clear-button">Leeren</button>
+                        <button id="insert-button">Einfügen</button>
+                        <button id="copy-button">Kopieren</button>
+                        <button id="playlist-button">Playlist</button>
+                    </div>
+                    <div class="player-info-bottom">
+                        <input type="text" id="stream-url" placeholder="Stream URL eingeben">
+                        <button id="play-button">Play</button>
+                        <label for="subtitle-file" style="cursor: pointer;">SRT</label>
+                        <input type="file" id="subtitle-file" accept=".srt" style="display: none;">
+                    </div>
+                </div>
             </div>
+
             <video id="video-player" controls>
                 <track id="subtitle-track" kind="subtitles" srclang="el" label="Griechisch" default>
             </video>
@@ -51,33 +66,36 @@
                 <h4 id="program-title"></h4>
                 <p id="program-desc"></p>
             </div>
-           
-            <div id="next-programs">
-        <!-- Container für die nächsten Programme -->
-                        <div class="next-program">
-                    <h4 class="next-program-title">Next Program 1 (09:00 - 10:00)</h4>
-                    <p class="next-program-desc" style="display: none;">Description of next program 1</p>
-                </div>
-                <div class="next-program">
-                    <h4 class="next-program-title">Next Program 2 (10:00 - 11:00)</h4>
-                    <p class="next-program-desc" style="display: none;">Description of next program 2</p>
-                </div>
-                <div class="next-program">
-                    <h4 class="next-program-title">Next Program 3 (11:00 - 12:00)</h4>
-                    <p class="next-program-desc" style="display: none;">Description of next program 3</p>
-                </div>
-                <div class="next-program">
-                    <h4 class="next-program-title">Next Program 4 (12:00 - 13:00)</h4>
-                    <p class="next-program-desc" style="display: none;">Description of next program 4</p>
-                </div>
-    </div>
 
-            
+            <div id="next-programs">
+                <!-- Container für die nächsten Programme -->
+                <div class="next-program">
+                    <h4 class="next-program-title">Nächstes Programm 1 (09:00 - 10:00)</h4>
+                    <p class="next-program-desc" style="display: none;">Beschreibung des nächsten Programms 1</p>
+                </div>
+                <div class="next-program">
+                    <h4 class="next-program-title">Nächstes Programm 2 (10:00 - 11:00)</h4>
+                    <p class="next-program-desc" style="display: none;">Beschreibung des nächsten Programms 2</p>
+                </div>
+                <div class="next-program">
+                    <h4 class="next-program-title">Nächstes Programm 3 (11:00 - 12:00)</h4>
+                    <p class="next-program-desc" style="display: none;">Beschreibung des nächsten Programms 3</p>
+                </div>
+                <div class="next-program">
+                    <h4 class="next-program-title">Nächstes Programm 4 (12:00 - 13:00)</h4>
+                    <p class="next-program-desc" style="display: none;">Beschreibung des nächsten Programms 4</p>
+                </div>
+            </div>
+
         </div>
-        <div id="additionalContent">
-            
-            <iframe src="https://foothubhd.xyz/" frameborder="0"></iframe>
+
+        <div class="additional-content">
+            <div class="content-title" onclick="toggleContent()">Foothubhd</div>
+            <div class="content-body" id="contentBody">
+                <iframe src="https://foothubhd.xyz/" frameborder="0" width="100%" height="100%"></iframe>
+            </div>
         </div>
+
     </div>
     <script src="scripts.js"></script>
 </body>
