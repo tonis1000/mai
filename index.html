@@ -50,46 +50,69 @@
         // M3U-URL zur Liste der Sender
         const m3uURL = 'https://raw.githubusercontent.com/gambler65/kongresi1908/e02c87c13cca9a31a602ca16f92c996c4021df8f/satlok.m3u';
 
-        // Lade die M3U-Datei und erstelle die Playlist
+        // Funktion zur Konvertierung von HTTP zu HTTPS für URLs
+        function convertToHttps(url) {
+            if (url.startsWith('http://')) {
+                return url.replace('http://', 'https://');
+            }
+            return url;
+        }
+
+        // Laden und Verarbeiten der M3U-Datei
         fetch(m3uURL)
             .then(response => response.text())
             .then(data => {
-                // Teile die Zeilen der M3U-Datei auf
-                const lines = data.trim().split('\n');
-
-                // Initialisiere eine leere Liste für die Sender
-                const channels = [];
-
-                // Durchlaufe jede Zeile der M3U-Datei
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i].trim();
-
-                    // Ignoriere Kommentarzeilen und leere Zeilen
-                    if (line.startsWith('#') || line === '') {
-                        continue;
-                    }
-
-                    // Suche nach #EXTINF und extrahiere Name und URL
-                    if (line.startsWith('#EXTINF:')) {
-                        // Extrahiere Informationen aus der Zeile
-                        const match = line.match(/#EXTINF:-?\d+ (?:tvg-id="([^"]+)")?(?: tvg-name="([^"]+)")?.*,(.*)/);
-                        if (match && match.length >= 4) {
-                            const tvgId = match[1] || '';
-                            const tvgName = match[2] || '';
-                            const channelUrl = lines[i + 1].trim();
-                            channels.push({ id: tvgId, name: tvgName, url: channelUrl });
-                        }
-                    }
-                }
-
-                // Erstelle Playlist-Einträge in der Sidebar
                 const playlistContainer = document.getElementById('playlist');
-                channels.forEach(channel => {
+                playlistContainer.innerHTML = ''; // Leeren der Playlist
+
+                // Teile die M3U-Datei in Blöcke auf
+                const blocks = data.trim().split('\n\n');
+
+                // Durchlaufe jeden Block in der M3U-Datei
+                blocks.forEach(block => {
+                    const lines = block.trim().split('\n');
+                    let tvgName = '';
+                    let tvgLogo = '';
+                    let channelUrl = '';
+
+                    lines.forEach(line => {
+                        const trimmedLine = line.trim();
+
+                        // Extrahiere tvg-name aus #EXTINF Zeilen
+                        if (trimmedLine.startsWith('#EXTINF:')) {
+                            const tvgNameMatch = trimmedLine.match(/tvg-name="([^"]+)"/);
+                            if (tvgNameMatch) {
+                                tvgName = tvgNameMatch[1];
+                            } else {
+                                const lastCommaIndex = trimmedLine.lastIndexOf(',');
+                                if (lastCommaIndex !== -1) {
+                                    tvgName = trimmedLine.substring(lastCommaIndex + 1).trim();
+                                } else {
+                                    tvgName = 'Unbekannter Sender';
+                                }
+                            }
+                        }
+
+                        // Extrahiere tvg-logo aus #EXTINF Zeilen
+                        if (trimmedLine.startsWith('#EXTINF:')) {
+                            const tvgLogoMatch = trimmedLine.match(/tvg-logo="([^"]+)"/);
+                            if (tvgLogoMatch) {
+                                tvgLogo = tvgLogoMatch[1];
+                            }
+                        }
+
+                        // Extrahiere Sender-URL
+                        if (!trimmedLine.startsWith('#')) {
+                            channelUrl = convertToHttps(trimmedLine);
+                        }
+                    });
+
+                    // Erstelle ein Playlist-Element in der Sidebar
                     const playlistItem = document.createElement('div');
                     playlistItem.className = 'playlist-item';
-                    playlistItem.textContent = channel.name || 'Unbekannter Sender';
+                    playlistItem.textContent = tvgName;
                     playlistItem.addEventListener('click', () => {
-                        document.getElementById('player').src = channel.url;
+                        document.getElementById('player').src = channelUrl;
                         document.getElementById('player').play();
                     });
                     playlistContainer.appendChild(playlistItem);
