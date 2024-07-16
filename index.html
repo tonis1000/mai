@@ -54,26 +54,44 @@
         fetch(m3uURL)
             .then(response => response.text())
             .then(data => {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(data, 'application/xml');
-                const items = xmlDoc.querySelectorAll('body > *');
-                const playlistContainer = document.getElementById('playlist');
+                // Spalte die Zeilen der M3U-Datei auf
+                const lines = data.trim().split('\n');
 
-                items.forEach(item => {
-                    if (item.tagName === 'A') {
-                        const name = item.getAttribute('tvg-name');
-                        const url = item.textContent.trim();
+                // Initialisiere eine leere Liste für die Sender
+                const channels = [];
 
-                        const playlistItem = document.createElement('div');
-                        playlistItem.className = 'playlist-item';
-                        playlistItem.textContent = name;
-                        playlistItem.addEventListener('click', () => {
-                            document.getElementById('player').src = url;
-                            document.getElementById('player').play();
-                        });
+                // Iteriere über jede Zeile in der M3U-Datei
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
 
-                        playlistContainer.appendChild(playlistItem);
+                    // Ignoriere Kommentarzeilen und leere Zeilen
+                    if (line.startsWith('#') || line === '') {
+                        continue;
                     }
+
+                    // Suche nach #EXTINF und extrahiere Name und URL
+                    if (line.startsWith('#EXTINF:')) {
+                        const match = line.match(/#EXTINF:-1 tvg-id="([^"]+)" tvg-name="([^"]+)"[^,]*,(.*)/);
+                        if (match && match.length === 4) {
+                            const tvgId = match[1];
+                            const tvgName = match[2];
+                            const channelUrl = lines[i + 1].trim();
+                            channels.push({ id: tvgId, name: tvgName, url: channelUrl });
+                        }
+                    }
+                }
+
+                // Erstelle Playlist-Einträge in der Sidebar
+                const playlistContainer = document.getElementById('playlist');
+                channels.forEach(channel => {
+                    const playlistItem = document.createElement('div');
+                    playlistItem.className = 'playlist-item';
+                    playlistItem.textContent = channel.name;
+                    playlistItem.addEventListener('click', () => {
+                        document.getElementById('player').src = channel.url;
+                        document.getElementById('player').play();
+                    });
+                    playlistContainer.appendChild(playlistItem);
                 });
             })
             .catch(error => console.error('Fehler beim Laden der M3U-Datei:', error));
