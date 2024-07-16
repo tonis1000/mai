@@ -199,9 +199,14 @@
                     playlistItem.addEventListener("click", () => {
                         videoPlayer.pause();
 
-                        const source = playlistVideoSources[index];
-                        tryStream(source, () => {
-                            const httpsSource = source.replace('http://', 'https://');
+                        const lastPart = playlistVideoSources[index];
+                        const baseURL = "http://test.satlok.club:80/";
+                        const username = "boranredbox";
+                        const password = "qsdqsdfgcvbcbcv";
+                        const httpSource = `${baseURL}${username}/${password}/${lastPart}`;
+                        const httpsSource = `${httpSource.replace('http://', 'https://')}`;
+
+                        tryStream(httpSource, () => {
                             tryStream(httpsSource);
                         });
                     });
