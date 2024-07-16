@@ -198,14 +198,23 @@
 
                     playlistItem.addEventListener("click", () => {
                         videoPlayer.pause();
+
                         const source = playlistVideoSources[index];
-                        const proxyURL = `https://proxyserver.com/proxy?url=${encodeURIComponent(source)}`;
-                        videoPlayer.src({ src: proxyURL, type: 'application/x-mpegURL' });
-                        videoPlayer.play();
-                        videoPlayer.scrollIntoView({ behavior: 'smooth' });
+                        tryStream(source, () => {
+                            const httpsSource = source.replace('http://', 'https://');
+                            tryStream(httpsSource);
+                        });
                     });
 
                     playlist.appendChild(playlistItem);
+                });
+            }
+
+            function tryStream(source, onError) {
+                videoPlayer.src({ src: source, type: 'application/x-mpegURL' });
+                videoPlayer.play().catch(error => {
+                    console.error(`Error loading stream ${source}:`, error);
+                    if (onError) onError();
                 });
             }
 
