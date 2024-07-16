@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const videoPlayer = document.getElementById('videoPlayer');
-    const streamUrl = 'http://onceeer.top:8080/';
+    const streamUrl = 'http://habeto.xyz:8080/';
     const username = 'xxxrestream';
     const password = 'fghiBrdf55';
 
