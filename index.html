@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-10">
                 <div class="input-group mb-3 mt-3">
-                    <input type="text" id="m3uURL" class="form-control" placeholder="Enter M3U URL">
+                    <input type="text" id="m3uURL" class="form-control" value="https://raw.githubusercontent.com/gambler65/kongresi1908/e02c87c13cca9a31a602ca16f92c996c4021df8f/satlok.m3u" placeholder="Enter M3U URL">
                     <div class="input-group-btn">
                         <button id="loadM3U" class="btn btn-primary btn-go">Go</button>
                     </div>
@@ -207,6 +207,9 @@
                     playlist.appendChild(playlistItem);
                 });
             }
+
+            // Automatically load the playlist when the page loads
+            loadM3UButton.click();
         });
     </script>
 </body>
