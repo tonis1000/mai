@@ -54,13 +54,13 @@
         fetch(m3uURL)
             .then(response => response.text())
             .then(data => {
-                // Spalte die Zeilen der M3U-Datei auf
+                // Teile die Zeilen der M3U-Datei auf
                 const lines = data.trim().split('\n');
 
                 // Initialisiere eine leere Liste für die Sender
                 const channels = [];
 
-                // Iteriere über jede Zeile in der M3U-Datei
+                // Durchlaufe jede Zeile der M3U-Datei
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i].trim();
 
@@ -71,10 +71,11 @@
 
                     // Suche nach #EXTINF und extrahiere Name und URL
                     if (line.startsWith('#EXTINF:')) {
-                        const match = line.match(/#EXTINF:-1 tvg-id="([^"]+)" tvg-name="([^"]+)"[^,]*,(.*)/);
-                        if (match && match.length === 4) {
-                            const tvgId = match[1];
-                            const tvgName = match[2];
+                        // Extrahiere Informationen aus der Zeile
+                        const match = line.match(/#EXTINF:-?\d+ (?:tvg-id="([^"]+)")?(?: tvg-name="([^"]+)")?.*,(.*)/);
+                        if (match && match.length >= 4) {
+                            const tvgId = match[1] || '';
+                            const tvgName = match[2] || '';
                             const channelUrl = lines[i + 1].trim();
                             channels.push({ id: tvgId, name: tvgName, url: channelUrl });
                         }
@@ -86,7 +87,7 @@
                 channels.forEach(channel => {
                     const playlistItem = document.createElement('div');
                     playlistItem.className = 'playlist-item';
-                    playlistItem.textContent = channel.name;
+                    playlistItem.textContent = channel.name || 'Unbekannter Sender';
                     playlistItem.addEventListener('click', () => {
                         document.getElementById('player').src = channel.url;
                         document.getElementById('player').play();
