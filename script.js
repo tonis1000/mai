@@ -1,15 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const videoPlayer = document.getElementById('videoPlayer');
-    const channelList = document.getElementById('channelList');
+    const streamUrl = 'http://onceeer.top:8080/';
+    const username = 'xxxrestream';
+    const password = 'fghiBrdf55';
 
-    // Event Listener für Klick auf Sender in der Sidebar
-    channelList.addEventListener('click', function(event) {
-        if (event.target.tagName === 'LI') {
-            const streamUrl = event.target.getAttribute('data-url');
-            if (streamUrl) {
-                videoPlayer.src = streamUrl;
-                videoPlayer.play();
-            }
-        }
+    // Setze die Videoquelle mit Basic-Auth
+    videoPlayer.src = streamUrl;
+    videoPlayer.addEventListener('loadedmetadata', function() {
+        console.log('Video geladen:', videoPlayer.duration);
     });
 });
