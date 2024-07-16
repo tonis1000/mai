@@ -1,230 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>IPTV Player</title>
-    <link href="https://jsd.onmicrosoft.cn/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://jsd.onmicrosoft.cn/npm/hls.js@latest"></script>
-    <style>
-        #playlist {
-            background-color: #f8f9fa;
-            padding: 15px;
-            max-height: 100vh;
-            overflow-y: auto;
-        }
-
-        #videoPlayer {
-            width: 100%;
-            height: auto;
-        }
-
-        .input-group-btn {
-            display: flex;
-            align-items: center;
-        }
-
-        .btn-go {
-            margin-left: 10px;
-        }
-
-        .tv-logo {
-            width: 100px;
-        }
-
-        .channel:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            transition: box-shadow 0.3s ease-in-out;
-            cursor: pointer;
-        }
-
-        .billed-msg {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: #333;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .search-bar {
-            margin-bottom: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV Webpage</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-2" id="playlist">
-                <input type="text" id="searchInput" class="form-control search-bar" placeholder="Search Channels">
-                <!-- Playlist items will be added here -->
-            </div>
-            <div class="col-md-10">
-                <div class="input-group mb-3 mt-3">
-                    <input type="text" id="m3uURL" class="form-control" value="https://raw.githubusercontent.com/gambler65/kongresi1908/e02c87c13cca9a31a602ca16f92c996c4021df8f/satlok.m3u" placeholder="Enter M3U URL">
-                    <div class="input-group-btn">
-                        <button id="loadM3U" class="btn btn-primary btn-go">Go</button>
-                    </div>
-                </div>
-                <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls></video>
-            </div>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Sender</h2>
+            <ul id="channelList">
+                <!-- Sender hier dynamisch einfügen -->
+                <li data-url="http://onceeer.top:8080/live/channel1.stream">Sender 1</li>
+                <li data-url="http://onceeer.top:8080/live/channel2.stream">Sender 2</li>
+                <li data-url="http://onceeer.top:8080/live/channel3.stream">Sender 3</li>
+                <!-- Beispiel Sender, dynamisch generiert oder aus Datenbank geladen -->
+            </ul>
+        </div>
+        <div class="main-content">
+            <video id="videoPlayer" controls autoplay>
+                <!-- Videoquelle hier einfügen -->
+            </video>
         </div>
     </div>
-    <div id="billedMsg" class="billed-msg d-none"></div>
-
-    <link href="https://jsd.onmicrosoft.cn/npm/video.js@8.6.1/dist/video-js.css" rel="stylesheet">
-    <script src="https://jsd.onmicrosoft.cn/npm/video.js@8.6.1/dist/video.min.js"></script>
-    <script src="https://cdnjs.loli.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://jsd.onmicrosoft.cn/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const videoPlayer = videojs("videoPlayer", {
-                controls: true,
-                fluid: true
-            });
-            const playlist = document.getElementById("playlist");
-            const loadM3UButton = document.getElementById("loadM3U");
-            const m3uURLInput = document.getElementById("m3uURL");
-            const billedMsgElement = document.getElementById("billedMsg");
-            const searchInput = document.getElementById("searchInput");
-
-            const savedPlaylistURL = localStorage.getItem("m3uPlaylistURL");
-            if (savedPlaylistURL) {
-                m3uURLInput.value = savedPlaylistURL;
-                setTimeout(function () {
-                    loadM3UButton.click();
-                }, 500);
-            }
-
-            let playlistItems = [];
-            let playlistVideoSources = [];
-
-            loadM3UButton.addEventListener("click", () => {
-                const m3uURL = m3uURLInput.value;
-                localStorage.setItem("m3uPlaylistURL", m3uURL);
-
-                fetch(m3uURL)
-                    .then(response => response.text())
-                    .then(data => {
-                        videoPlayer.pause();
-                        playlist.innerHTML = '';
-                        playlistItems = [];
-                        playlistVideoSources = [];
-
-                        const lines = data.split('\n');
-                        let tvgName = '';
-                        let tvgLogo = '';
-                        let billedMsg = '';
-
-                        for (let i = 0; i < lines.length; i++) {
-                            const line = lines[i].trim();
-
-                            if (line.startsWith("#EXTM3U")) {
-                                const billedMsgMatch = line.match(/billed-msg="([^"]+)"/);
-                                if (billedMsgMatch) {
-                                    billedMsg = billedMsgMatch[1];
-                                }
-                            }
-
-                            if (line.startsWith("#EXTINF:")) {
-                                const tvgNameMatch = line.match(/tvg-name="([^"]+)"/);
-                                if (tvgNameMatch) {
-                                    tvgName = tvgNameMatch[1];
-                                } else {
-                                    const lastCommaIndex = line.lastIndexOf(",");
-                                    if (lastCommaIndex !== -1) {
-                                        tvgName = line.substring(lastCommaIndex + 1).trim();
-                                    } else {
-                                        tvgName = `Stream ${i + 1}`;
-                                    }
-                                }
-
-                                const tvgLogoMatch = line.match(/tvg-logo="([^"]+)"/);
-                                if (tvgLogoMatch) {
-                                    tvgLogo = tvgLogoMatch[1];
-                                }
-
-                                playlistItems.push({
-                                    tvgName,
-                                    tvgLogo
-                                });
-                            }
-
-                            if (line.length > 0 && !line.startsWith("#")) {
-                                playlistVideoSources.push(line);
-                            }
-                        }
-
-                        renderPlaylist(playlistItems);
-
-                        if (playlistItems.length > 0) {
-                            playlist.classList.remove("d-none");
-                        } else {
-                            playlist.classList.add("d-none");
-                        }
-
-                        if (billedMsg) {
-                            billedMsgElement.textContent = billedMsg;
-                            billedMsgElement.classList.remove("d-none");
-                        } else {
-                            billedMsgElement.classList.add("d-none");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error loading the M3U file:", error);
-                    });
-            });
-
-            searchInput.addEventListener("input", () => {
-                const searchText = searchInput.value.trim().toLowerCase();
-                const filteredItems = playlistItems.filter(item => item.tvgName.toLowerCase().includes(searchText));
-                renderPlaylist(filteredItems);
-            });
-
-            function renderPlaylist(items) {
-                const playlistItemsElem = playlist.querySelectorAll('.channel');
-                playlistItemsElem.forEach(item => item.remove());
-
-                items.forEach((item, index) => {
-                    const playlistItem = document.createElement("div");
-                    playlistItem.className = "channel d-flex flex-column p-3";
-                    playlistItem.textContent = item.tvgName;
-
-                    if (item.tvgLogo) {
-                        const logoImage = document.createElement("img");
-                        logoImage.src = item.tvgLogo;
-                        logoImage.className = "tv-logo";
-                        playlistItem.appendChild(logoImage);
-                    }
-
-                    playlistItem.addEventListener("click", () => {
-                        videoPlayer.pause();
-
-                        const lastPart = playlistVideoSources[index];
-                        const baseURL = "http://test.satlok.club:80/";
-                        const username = "boranredbox";
-                        const password = "qsdqsdfgcvbcbcv";
-                        const httpSource = `${baseURL}${username}/${password}/${lastPart}`;
-                        const httpsSource = `${httpSource.replace('http://', 'https://')}`;
-
-                        tryStream(httpSource, () => {
-                            tryStream(httpsSource);
-                        });
-                    });
-
-                    playlist.appendChild(playlistItem);
-                });
-            }
-
-            function tryStream(source, onError) {
-                videoPlayer.src({ src: source, type: 'application/x-mpegURL' });
-                videoPlayer.play().catch(error => {
-                    console.error(`Error loading stream ${source}:`, error);
-                    if (onError) onError();
-                });
-            }
-
-            loadM3UButton.click();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
