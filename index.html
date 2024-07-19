@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Webpage</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Streaming</title>
+  <link href="https://vjs.zencdn.net/7.11.8/video-js.css" rel="stylesheet">
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #player-container { max-width: 640px; margin: auto; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <video id="videoPlayer" controls autoplay>
-            <!-- Videoquelle hier einfügen -->
-        </video>
-    </div>
-    <script src="script.js"></script>
+  <div id="player-container">
+    <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" data-setup='{}'>
+      <source src="http://test.satlok.club:80/boranredbox/qsdqsdfgcvbcbcv/24088" type="application/x-mpegURL">
+      Ihr Browser unterstützt das Videoformat nicht.
+    </video>
+  </div>
+
+  <script src="https://vjs.zencdn.net/7.11.8/video.min.js"></script>
+  <script>
+    var player = videojs('my-video');
+    player.ready(function() {
+      player.play();
+    });
+  </script>
 </body>
 </html>
