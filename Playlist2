@@ -1,0 +1,25 @@
+#EXTM3U
+
+#EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
+https://cdn1.smart-tv-data.com/live/ert1/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
+https://demis.trikoumela.xyz/channels/ch1/index.m3u8
+
+#EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
+https://nikolaos.ragkeklas.site/ch1/index.m3u8
+
+#EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png", ERT2
+https://cdn1.smart-tv-data.com/vid/ert-2-hbbtv/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
+https://cdn1.smart-tv-data.com/vid/ert-3-hbbtv/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
+https://demis.trikoumela.xyz/channels/ch2/index.m3u8
+
+#EXTINF:-1 tvg-id="ertnews" tvg-logo="https://i.imgur.com/XwLTzaF.jpg", ERT News
+https://ertflix.s.llnwi.net/ertlive/ertnews/default/index.m3u8
+
+#EXTINF:-1 tvg-id="ertnews" tvg-logo="https://i.imgur.com/XwLTzaF.jpg", ERT News
+https://cdn1.smart-tv-data.com/vid/ertnews/playlist.m3u8
