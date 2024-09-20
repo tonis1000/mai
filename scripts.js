@@ -138,8 +138,9 @@ function parseDateTime(epgTime) {
     return date;
 }
 
+
 // Funktion zum Finden des aktuellen Programms basierend auf der Uhrzeit
-function getCurrentProgram(channelId) {
+function findCurrentProgram(channelId) {
     const now = new Date();
     if (epgData[channelId]) {
         const currentProgram = epgData[channelId].find(prog => now >= prog.start && now < prog.stop);
@@ -154,14 +155,12 @@ function getCurrentProgram(channelId) {
             const end = currentProgram.stop.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Endzeit des laufenden Programms
             const title = currentProgram.title.replace(/\s*\[.*?\]\s*/g, '').replace(/[\[\]]/g, ''); // Titel ohne den Teil in eckigen Klammern
 
-
-
-return {
-    title: `${title} (${start} - ${end})`, // Verwende den bereinigten Titel ohne den Teil in eckigen Klammern
-    description: description,
-    pastPercentage: pastPercentage,
-    futurePercentage: futurePercentage
-};
+            return {
+                title: `${title} (${start} - ${end})`, // Verwende den bereinigten Titel ohne den Teil in eckigen Klammern
+                description: description,
+                pastPercentage: pastPercentage,
+                futurePercentage: futurePercentage
+            };
 
         } else {
             return { title: 'Keine aktuelle Sendung verfügbar', description: 'Keine Beschreibung verfügbar', pastPercentage: 0, futurePercentage: 0 };
@@ -244,32 +243,6 @@ sidebarList.addEventListener('click', function (event) {
 
 
 
-// Funktion zum Aktualisieren des Players mit der Programmbeschreibung
-function updatePlayerDescription(title, description) {
-    document.getElementById('program-title').textContent = title;
-    document.getElementById('program-desc').textContent = description;
-}
-
-
-// Funktion zum Extrahieren des Stream-URLs aus der M3U-Datei
-function extractStreamURLs(data) {
-    const lines = data.split('\n');
-    const streamURLs = {};
-    let currentChannelId = null;
-    lines.forEach(line => {
-        if (line.startsWith('#EXTINF')) {
-            const idMatch = line.match(/tvg-id="([^"]+)"/);
-            currentChannelId = idMatch && idMatch[1];
-        } else if (currentChannelId && line.trim()) {
-            streamURLs[currentChannelId] = streamURLs[currentChannelId] || [];
-            streamURLs[currentChannelId].push(line.trim());
-            currentChannelId = null;
-        }
-    });
-    return streamURLs;
-}
-
-
 // Funktion zum Aktualisieren der Sidebar von einer M3U-Datei
 async function updateSidebarFromM3U(data) {
     const sidebarList = document.getElementById('sidebar-list');
@@ -299,17 +272,17 @@ async function updateSidebarFromM3U(data) {
     const streamURLs = extractStreamURLs(data);
     const lines = data.split('\n');
 
-    for (let line of lines) {
-        if (line.startsWith('#EXTINF')) {
-            const idMatch = line.match(/tvg-id="([^"]+)"/);
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].startsWith('#EXTINF')) {
+            const idMatch = lines[i].match(/tvg-id="([^"]+)"/);
             const channelId = idMatch ? idMatch[1] : null;
-            const nameMatch = line.match(/,(.*)$/);
+            const nameMatch = lines[i].match(/,(.*)$/);
             const name = nameMatch ? nameMatch[1].trim() : 'Unbekannt';
 
-            const imgMatch = line.match(/tvg-logo="([^"]+)"/);
+            const imgMatch = lines[i].match(/tvg-logo="([^"]+)"/);
             const imgURL = imgMatch ? imgMatch[1] : 'default_logo.png';
 
-            const streamURL = streamURLs[channelId] ? streamURLs[channelId].shift() : null;
+            const streamURL = lines[i + 1].startsWith('http') ? lines[i + 1].trim() : null;
 
             if (streamURL) {
                 try {
@@ -341,6 +314,15 @@ async function updateSidebarFromM3U(data) {
 
     checkStreamStatus();
 }
+
+// Beispiel für eine einfache Methode zum Abrufen von Programm-Informationen
+async function getCurrentProgram(channelId) {
+    // Beispiel-Daten, diese Funktion sollte durch einen echten Abruf der EPG-Daten ersetzt werden
+    // Es wird davon ausgegangen, dass `epgData` global verfügbar ist
+    return findCurrentProgram(channelId);
+}
+
+
 
 
 // Funktion zum Überprüfen des Status der Streams und Markieren der gesamten Sidebar-Einträge
@@ -571,7 +553,12 @@ function toggleContent(contentId) {
 // Funktion zum Laden der Playlist-URLs aus playlist-urls.txt und Aktualisieren der Sidebar
 function loadPlaylistUrls() {
     fetch('playlist-urls.txt')
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Netzwerkantwort war nicht ok.');
+            }
+            return response.text();
+        })
         .then(data => {
             const playlistList = document.getElementById('playlist-url-list');
             playlistList.innerHTML = ''; // Leert die Liste, um neue Einträge hinzuzufügen
@@ -592,6 +579,7 @@ function loadPlaylistUrls() {
                             document.getElementById('stream-url').value = url; // Setzt die URL in das Eingabefeld stream-url
 
                             // Nach dem Setzen der URL in das Eingabefeld
+                            console.log('Versuche URL abzurufen:', url); // Debugging-Log
                             fetch(url)
                                 .then(response => {
                                     if (!response.ok) {
@@ -599,22 +587,29 @@ function loadPlaylistUrls() {
                                     }
                                     return response.text();
                                 })
-                                .then(data => updateSidebarFromM3U(data))
-                                .catch(error => console.error('Fehler beim Laden der Playlist:', error));
+                                .then(data => {
+                                    console.log('Daten erfolgreich geladen. Verarbeite M3U-Daten.'); // Debugging-Log
+                                    updateSidebarFromM3U(data);
+                                })
+                                .catch(error => {
+                                    console.error('Fehler beim Laden der Playlist:', error);
+                                    alert('Fehler beim Laden der Playlist. Siehe Konsole für Details.'); // Optional: Benutzer informieren
+                                });
                         });
 
                         li.appendChild(link);
                         playlistList.appendChild(li);
+                    } else {
+                        console.warn('Zeile hat kein Label oder keine URL:', trimmedLine); // Debugging-Log für leere Zeilen
                     }
                 }
             });
         })
-        .catch(error => console.error('Fehler beim Laden der Playlist URLs:', error));
+        .catch(error => {
+            console.error('Fehler beim Laden der Playlist URLs:', error);
+            alert('Fehler beim Laden der Playlist-URLs. Siehe Konsole für Details.'); // Optional: Benutzer informieren
+        });
 }
-
-
-
-
 
 // Event-Listener für den Klick auf den Playlist-URLs-Titel
 document.addEventListener('DOMContentLoaded', function() {
@@ -622,14 +617,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (playlistUrlsTitle) {
         playlistUrlsTitle.addEventListener('click', loadPlaylistUrls);
     } else {
-        console.error('Element für Playlist-URLs-Titel nicht gefunden.');
+        console.error('Element für den Klick-Event-Listener wurde nicht gefunden.');
     }
 });
-
-
-
-
-
 
 
 
