@@ -1,0 +1,4 @@
+German,https://raw.githubusercontent.com/embreq/iptv/main/senderliste.m3u
+Greece ERT,https://raw.githubusercontent.com/tonis1000/Tonis/main/Playlist2
+Greece,https://raw.githubusercontent.com/hitnickgr/iptv/main/GreekChannels
+Greece SP,https://pastebin.com/raw/a6WeqNUG
