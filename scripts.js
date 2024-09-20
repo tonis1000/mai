@@ -138,9 +138,8 @@ function parseDateTime(epgTime) {
     return date;
 }
 
-
 // Funktion zum Finden des aktuellen Programms basierend auf der Uhrzeit
-function findCurrentProgram(channelId) {
+function getCurrentProgram(channelId) {
     const now = new Date();
     if (epgData[channelId]) {
         const currentProgram = epgData[channelId].find(prog => now >= prog.start && now < prog.stop);
@@ -170,61 +169,47 @@ function findCurrentProgram(channelId) {
 }
 
 
-function updatePlayerDescription(title, description) {
-    console.log('Updating player description:', title, description);
-    document.getElementById('program-title').textContent = title;
-    document.getElementById('program-desc').textContent = description;
-}
-
-function updateProgramInfo(info) {
-            console.log('Updating program info:', info);
-            document.getElementById('program-info-details').textContent = info;
-}
 
 // Funktion zum Aktualisieren der nächsten Programme
-        function updateNextPrograms(channelId) {
-            console.log('Updating next programs for channel:', channelId);
-            const nextProgramsContainer = document.getElementById('next-programs');
-            nextProgramsContainer.innerHTML = '';
+function updateNextPrograms(channelId) {
+    const nextProgramsContainer = document.getElementById('next-programs');
+    nextProgramsContainer.innerHTML = ''; // Leert den Container, um die neuen Programme einzufügen
 
-            if (epgData[channelId]) {
-                const now = new Date();
-                const upcomingPrograms = epgData[channelId]
-                    .filter(prog => prog.start > now)
-                    .slice(0, 4);
+    if (epgData[channelId]) {
+        const now = new Date();
+        const upcomingPrograms = epgData[channelId]
+            .filter(prog => prog.start > now) // Filtert nur Programme, die in der Zukunft liegen
+            .slice(0, 4); // Begrenzt auf die nächsten 4 Programme
 
-                upcomingPrograms.forEach(program => {
-                    const nextProgramDiv = document.createElement('div');
-                    nextProgramDiv.classList.add('next-program');
+        upcomingPrograms.forEach(program => {
+            const nextProgramDiv = document.createElement('div');
+            nextProgramDiv.classList.add('next-program');
 
-                    const nextProgramTitle = document.createElement('h4');
-                    nextProgramTitle.classList.add('next-program-title');
-                    const start = program.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const end = program.stop.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const title = program.title.replace(/\s*\[.*?\]\s*/g, '').replace(/[\[\]]/g, '');
-                    nextProgramTitle.textContent = `${title} (${start} - ${end})`;
+            const nextProgramTitle = document.createElement('h4');
+            nextProgramTitle.classList.add('next-program-title'); // Korrigierte CSS-Klasse
+            const start = program.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Startzeit des nächsten Programms
+            const end = program.stop.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Endzeit des nächsten Programms
+            const title = program.title.replace(/\s*\[.*?\]\s*/g, '').replace(/[\[\]]/g, ''); // Titel ohne den Teil in eckigen Klammern
+            nextProgramTitle.textContent = `${title} (${start} - ${end})`;
 
-                    const nextProgramDesc = document.createElement('p');
-                    nextProgramDesc.classList.add('next-program-desc');
-                    nextProgramDesc.textContent = program.desc || 'Keine Beschreibung verfügbar';
-                    nextProgramDesc.style.display = 'none'; // Standardmäßig ausgeblendet
+            const nextProgramDesc = document.createElement('p');
+            nextProgramDesc.classList.add('next-program-desc'); // Korrigierte CSS-Klasse
+            nextProgramDesc.classList.add('expandable'); // Fügt die Klasse für das Aufklappen hinzu
+            nextProgramDesc.textContent = program.desc || 'Keine Beschreibung verfügbar';
 
-                    nextProgramDiv.appendChild(nextProgramTitle);
-                    nextProgramDiv.appendChild(nextProgramDesc);
+            nextProgramDiv.appendChild(nextProgramTitle);
+            nextProgramDiv.appendChild(nextProgramDesc);
 
-                    nextProgramTitle.addEventListener('click', function() {
-                        if (nextProgramDesc.style.display === 'none') {
-                            nextProgramDesc.style.display = 'block';
-                            updateProgramInfo(title, nextProgramDesc.textContent);
-                        } else {
-                            nextProgramDesc.style.display = 'none';
-                        }
-                    });
+            nextProgramTitle.addEventListener('click', function() {
+                // Toggle für das Aufklappen der Beschreibung
+                nextProgramDesc.classList.toggle('expanded');
+            });
 
-                    nextProgramsContainer.appendChild(nextProgramDiv);
-                });
-            }
-        }
+            nextProgramsContainer.appendChild(nextProgramDiv);
+        });
+    }
+}
+
 
 
 
@@ -331,9 +316,13 @@ async function updateSidebarFromM3U(data) {
 
 // Beispiel für eine einfache Methode zum Abrufen von Programm-Informationen
 async function getCurrentProgram(channelId) {
-    // Beispiel-Daten, diese Funktion sollte durch einen echten Abruf der EPG-Daten ersetzt werden
-    // Es wird davon ausgegangen, dass `epgData` global verfügbar ist
-    return findCurrentProgram(channelId);
+    // Hier sollte deine Implementierung zum Abrufen der Programm-Informationen stehen
+    // Das Beispiel hier gibt Dummy-Daten zurück
+    return {
+        title: 'Aktuelles Programm',
+        pastPercentage: 50, // Beispielwert
+        futurePercentage: 50 // Beispielwert
+    };
 }
 
 
@@ -625,6 +614,9 @@ function loadPlaylistUrls() {
         });
 }
 
+
+
+
 // Event-Listener für den Klick auf den Playlist-URLs-Titel
 document.addEventListener('DOMContentLoaded', function() {
     const playlistUrlsTitle = document.querySelector('.content-title[onclick="toggleContent(\'playlist-urls\')"]');
@@ -708,3 +700,4 @@ function playStream(streamURL) {
         console.error('Stream-Format wird vom aktuellen Browser nicht unterstützt.');
     }
 }
+
