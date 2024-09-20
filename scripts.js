@@ -245,96 +245,102 @@ sidebarList.addEventListener('click', function (event) {
 
 
 // Funktion zum Aktualisieren des Players mit der Programmbeschreibung
+function updatePlayerDescription(title, description) {
+    document.getElementById('program-title').textContent = title;
+    document.getElementById('program-desc').textContent = description;
+}
+
+
+// Funktion zum Extrahieren des Stream-URLs aus der M3U-Datei
+function extractStreamURLs(data) {
+    const lines = data.split('\n');
+    const streamURLs = {};
+    let currentChannelId = null;
+    lines.forEach(line => {
+        if (line.startsWith('#EXTINF')) {
+            const idMatch = line.match(/tvg-id="([^"]+)"/);
+            currentChannelId = idMatch && idMatch[1];
+        } else if (currentChannelId && line.trim()) {
+            streamURLs[currentChannelId] = streamURLs[currentChannelId] || [];
+            streamURLs[currentChannelId].push(line.trim());
+            currentChannelId = null;
+        }
+    });
+    return streamURLs;
+}
+
+
+// Funktion zum Aktualisieren der Sidebar von einer M3U-Datei
 async function updateSidebarFromM3U(data) {
     const sidebarList = document.getElementById('sidebar-list');
     sidebarList.innerHTML = '';
 
-    // Funktion zum Extrahieren der Stream-URLs und zugehörigen Metadaten
     const extractStreamURLs = (data) => {
         const urls = {};
         const lines = data.split('\n');
         let currentChannelId = null;
-        let currentChannelInfo = null;
 
         lines.forEach(line => {
             if (line.startsWith('#EXTINF')) {
-                // Extrahiere mögliche Attribute und Kanalname
                 const idMatch = line.match(/tvg-id="([^"]+)"/);
-                const logoMatch = line.match(/tvg-logo="([^"]+)"/);
-                const groupTitleMatch = line.match(/group-title="([^"]+)"/);
-                const nameMatch = line.match(/,(.*)$/);
-
-                const channelId = idMatch ? idMatch[1] : null;
-                const logoUrl = logoMatch ? logoMatch[1] : 'default_logo.png';
-                const groupTitle = groupTitleMatch ? groupTitleMatch[1] : 'Unbekannt';
-                const name = nameMatch ? nameMatch[1].trim() : 'Unbekannt';
-
-                if (channelId && !urls[channelId]) {
-                    urls[channelId] = {
-                        name: name,
-                        logoUrl: logoUrl,
-                        groupTitle: groupTitle,
-                        urls: []
-                    };
+                currentChannelId = idMatch ? idMatch[1] : null;
+                if (currentChannelId && !urls[currentChannelId]) {
+                    urls[currentChannelId] = [];
                 }
-                currentChannelId = channelId;
-                currentChannelInfo = urls[channelId];
             } else if (currentChannelId && line.startsWith('http')) {
-                // Füge die URL zur aktuellen Channel-ID hinzu
-                if (currentChannelInfo) {
-                    currentChannelInfo.urls.push(line);
-                }
-                currentChannelId = null; // Setze die Channel-ID zurück
+                urls[currentChannelId].push(line);
+                currentChannelId = null;
             }
         });
 
-        console.log('Extrahierte Stream-URLs:', urls); // Debugging-Log
         return urls;
     };
 
     const streamURLs = extractStreamURLs(data);
+    const lines = data.split('\n');
 
-    for (let channelId in streamURLs) {
-        const channel = streamURLs[channelId];
-        const name = channel.name;
-        const logoUrl = channel.logoUrl;
-        const streamURL = channel.urls.length > 0 ? channel.urls[0] : null; // Nimm die erste URL
+    for (let line of lines) {
+        if (line.startsWith('#EXTINF')) {
+            const idMatch = line.match(/tvg-id="([^"]+)"/);
+            const channelId = idMatch ? idMatch[1] : null;
+            const nameMatch = line.match(/,(.*)$/);
+            const name = nameMatch ? nameMatch[1].trim() : 'Unbekannt';
 
-        if (streamURL) {
-            try {
-                // Ersetze die Funktion getCurrentProgram durch die angepasste Version
-                const programInfo = getCurrentProgram(channelId);
+            const imgMatch = line.match(/tvg-logo="([^"]+)"/);
+            const imgURL = imgMatch ? imgMatch[1] : 'default_logo.png';
 
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                    <div class="channel-info" data-stream="${streamURL}" data-channel-id="${channelId}">
-                        <div class="logo-container">
-                            <img src="${logoUrl}" alt="${name} Logo">
-                        </div>
-                        <span class="sender-name">${name}</span>
-                        <span class="epg-channel">
-                            <span>${programInfo.title}</span>
-                            <div class="epg-timeline">
-                                <div class="epg-past" style="width: ${programInfo.pastPercentage}%"></div>
-                                <div class="epg-future" style="width: ${programInfo.futurePercentage}%"></div>
+            const streamURL = streamURLs[channelId] ? streamURLs[channelId].shift() : null;
+
+            if (streamURL) {
+                try {
+                    const programInfo = await getCurrentProgram(channelId);
+
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <div class="channel-info" data-stream="${streamURL}" data-channel-id="${channelId}">
+                            <div class="logo-container">
+                                <img src="${imgURL}" alt="${name} Logo">
                             </div>
-                        </span>
-                    </div>
-                `;
-                sidebarList.appendChild(listItem);
-            } catch (error) {
-                console.error(`Fehler beim Abrufen der EPG-Daten für Kanal-ID ${channelId}:`, error);
+                            <span class="sender-name">${name}</span>
+                            <span class="epg-channel">
+                                <span>${programInfo.title}</span>
+                                <div class="epg-timeline">
+                                    <div class="epg-past" style="width: ${programInfo.pastPercentage}%"></div>
+                                    <div class="epg-future" style="width: ${programInfo.futurePercentage}%"></div>
+                                </div>
+                            </span>
+                        </div>
+                    `;
+                    sidebarList.appendChild(listItem);
+                } catch (error) {
+                    console.error(`Fehler beim Abrufen der EPG-Daten für Kanal-ID ${channelId}:`, error);
+                }
             }
-        } else {
-            console.log(`Keine Stream-URL gefunden für Kanal-ID ${channelId}`); // Debugging-Log
         }
     }
 
     checkStreamStatus();
 }
-
-
-
 
 
 // Funktion zum Überprüfen des Status der Streams und Markieren der gesamten Sidebar-Einträge
@@ -565,12 +571,7 @@ function toggleContent(contentId) {
 // Funktion zum Laden der Playlist-URLs aus playlist-urls.txt und Aktualisieren der Sidebar
 function loadPlaylistUrls() {
     fetch('playlist-urls.txt')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Netzwerkantwort war nicht ok.');
-            }
-            return response.text();
-        })
+        .then(response => response.text())
         .then(data => {
             const playlistList = document.getElementById('playlist-url-list');
             playlistList.innerHTML = ''; // Leert die Liste, um neue Einträge hinzuzufügen
@@ -591,7 +592,6 @@ function loadPlaylistUrls() {
                             document.getElementById('stream-url').value = url; // Setzt die URL in das Eingabefeld stream-url
 
                             // Nach dem Setzen der URL in das Eingabefeld
-                            console.log('Versuche URL abzurufen:', url); // Debugging-Log
                             fetch(url)
                                 .then(response => {
                                     if (!response.ok) {
@@ -599,29 +599,19 @@ function loadPlaylistUrls() {
                                     }
                                     return response.text();
                                 })
-                                .then(data => {
-                                    console.log('Daten erfolgreich geladen. Verarbeite M3U-Daten.'); // Debugging-Log
-                                    updateSidebarFromM3U(data);
-                                })
-                                .catch(error => {
-                                    console.error('Fehler beim Laden der Playlist:', error);
-                                    alert('Fehler beim Laden der Playlist. Siehe Konsole für Details.'); // Optional: Benutzer informieren
-                                });
+                                .then(data => updateSidebarFromM3U(data))
+                                .catch(error => console.error('Fehler beim Laden der Playlist:', error));
                         });
 
                         li.appendChild(link);
                         playlistList.appendChild(li);
-                    } else {
-                        console.warn('Zeile hat kein Label oder keine URL:', trimmedLine); // Debugging-Log für leere Zeilen
                     }
                 }
             });
         })
-        .catch(error => {
-            console.error('Fehler beim Laden der Playlist URLs:', error);
-            alert('Fehler beim Laden der Playlist-URLs. Siehe Konsole für Details.'); // Optional: Benutzer informieren
-        });
+        .catch(error => console.error('Fehler beim Laden der Playlist URLs:', error));
 }
+
 
 
 
@@ -632,9 +622,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (playlistUrlsTitle) {
         playlistUrlsTitle.addEventListener('click', loadPlaylistUrls);
     } else {
-        console.error('Element für den Klick-Event-Listener wurde nicht gefunden.');
+        console.error('Element für Playlist-URLs-Titel nicht gefunden.');
     }
 });
+
+
+
+
+
 
 
 
