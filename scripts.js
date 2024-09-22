@@ -33,25 +33,54 @@ document.getElementById('playlist-button').addEventListener('click', function() 
 
 // Funktion, um die Ressource abzurufen
 async function fetchResource(url) {
-    // Überprüfen, ob die URL HTTPS verwendet und die Seite über HTTPS ausgeliefert wird
-    if (window.location.protocol === 'https:' && url.startsWith('https:')) {
-        url = url.replace('https:', 'http:');
-    }
+    let finalUrl = url;
 
     try {
-        const response = await fetch(url);
+        // 1. Versuch: Verwende den CORS-Proxy direkt
+        console.log('Trying with CORS proxy...');
+        let response = await fetch('https://cors-anywhere.herokuapp.com/' + finalUrl);
+
+        // Wenn die Antwort nicht OK ist, versuchen, die URL auf HTTPS zu ändern
+        if (!response.ok) {
+            console.log('CORS proxy request failed, trying HTTPS...');
+            finalUrl = finalUrl.replace('http:', 'https:'); // Ändern zu HTTPS
+            response = await fetch('https://cors-anywhere.herokuapp.com/' + finalUrl);
+        }
+
+        // Wenn die Antwort immer noch nicht OK ist, Fehler werfen
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+
         const data = await response.text();
         updateSidebarFromM3U(data);
     } catch (error) {
-        console.error('Fehler beim Laden der Playlist:', error);
+        console.error('Fehler beim Laden der Playlist mit CORS-Proxy:', error);
+    }
+
+    try {
+        // 2. Versuch: Ohne den CORS-Proxy
+        console.log('Trying without CORS proxy...');
+        let response = await fetch(finalUrl);
+
+        // Wenn die Antwort nicht OK ist, versuchen, die URL auf HTTPS zu ändern
+        if (!response.ok) {
+            console.log('Direct request failed, trying HTTPS...');
+            finalUrl = finalUrl.replace('http:', 'https:'); // Ändern zu HTTPS
+            response = await fetch(finalUrl);
+        }
+
+        // Wenn die Antwort immer noch nicht OK ist, Fehler werfen
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.text();
+        updateSidebarFromM3U(data);
+    } catch (error) {
+        console.error('Fehler beim Laden der Playlist ohne CORS-Proxy:', error);
     }
 }
-
-
-
 
 
 // Leeren Button
@@ -140,7 +169,7 @@ function parseDateTime(epgTime) {
 
 
 // Funktion zum Finden des aktuellen Programms basierend auf der Uhrzeit
-function findCurrentProgram(channelId) {
+function getCurrentProgram(channelId) {
     const now = new Date();
     if (epgData[channelId]) {
         const currentProgram = epgData[channelId].find(prog => now >= prog.start && now < prog.stop);
@@ -169,48 +198,58 @@ function findCurrentProgram(channelId) {
     return { title: 'Keine EPG-Daten verfügbar', description: 'Keine Beschreibung verfügbar', pastPercentage: 0, futurePercentage: 0 };
 }
 
+// Funktion zum Aktualisieren des Players mit der Programmbeschreibung
+function updatePlayerDescription(title, description) {
+    console.log('Updating player description:', title, description);
+    document.getElementById('program-title').textContent = title;
+    document.getElementById('program-desc').textContent = description;
+}
 
 
 // Funktion zum Aktualisieren der nächsten Programme
-function updateNextPrograms(channelId) {
-    const nextProgramsContainer = document.getElementById('next-programs');
-    nextProgramsContainer.innerHTML = ''; // Leert den Container, um die neuen Programme einzufügen
+        function updateNextPrograms(channelId) {
+            console.log('Updating next programs for channel:', channelId);
+            const nextProgramsContainer = document.getElementById('next-programs');
+            nextProgramsContainer.innerHTML = '';
 
-    if (epgData[channelId]) {
-        const now = new Date();
-        const upcomingPrograms = epgData[channelId]
-            .filter(prog => prog.start > now) // Filtert nur Programme, die in der Zukunft liegen
-            .slice(0, 4); // Begrenzt auf die nächsten 4 Programme
+            if (epgData[channelId]) {
+                const now = new Date();
+                const upcomingPrograms = epgData[channelId]
+                    .filter(prog => prog.start > now)
+                    .slice(0, 4);
 
-        upcomingPrograms.forEach(program => {
-            const nextProgramDiv = document.createElement('div');
-            nextProgramDiv.classList.add('next-program');
+                upcomingPrograms.forEach(program => {
+                    const nextProgramDiv = document.createElement('div');
+                    nextProgramDiv.classList.add('next-program');
 
-            const nextProgramTitle = document.createElement('h4');
-            nextProgramTitle.classList.add('next-program-title'); // Korrigierte CSS-Klasse
-            const start = program.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Startzeit des nächsten Programms
-            const end = program.stop.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Endzeit des nächsten Programms
-            const title = program.title.replace(/\s*\[.*?\]\s*/g, '').replace(/[\[\]]/g, ''); // Titel ohne den Teil in eckigen Klammern
-            nextProgramTitle.textContent = `${title} (${start} - ${end})`;
+                    const nextProgramTitle = document.createElement('h4');
+                    nextProgramTitle.classList.add('next-program-title');
+                    const start = program.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const end = program.stop.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const title = program.title.replace(/\s*\[.*?\]\s*/g, '').replace(/[\[\]]/g, '');
+                    nextProgramTitle.textContent = `${title} (${start} - ${end})`;
 
-            const nextProgramDesc = document.createElement('p');
-            nextProgramDesc.classList.add('next-program-desc'); // Korrigierte CSS-Klasse
-            nextProgramDesc.classList.add('expandable'); // Fügt die Klasse für das Aufklappen hinzu
-            nextProgramDesc.textContent = program.desc || 'Keine Beschreibung verfügbar';
+                    const nextProgramDesc = document.createElement('p');
+                    nextProgramDesc.classList.add('next-program-desc');
+                    nextProgramDesc.textContent = program.desc || 'Keine Beschreibung verfügbar';
+                    nextProgramDesc.style.display = 'none'; // Standardmäßig ausgeblendet
 
-            nextProgramDiv.appendChild(nextProgramTitle);
-            nextProgramDiv.appendChild(nextProgramDesc);
+                    nextProgramDiv.appendChild(nextProgramTitle);
+                    nextProgramDiv.appendChild(nextProgramDesc);
 
-            nextProgramTitle.addEventListener('click', function() {
-                // Toggle für das Aufklappen der Beschreibung
-                nextProgramDesc.classList.toggle('expanded');
-            });
+                    nextProgramTitle.addEventListener('click', function() {
+                        if (nextProgramDesc.style.display === 'none') {
+                            nextProgramDesc.style.display = 'block';
+                            updateProgramInfo(title, nextProgramDesc.textContent);
+                        } else {
+                            nextProgramDesc.style.display = 'none';
+                        }
+                    });
 
-            nextProgramsContainer.appendChild(nextProgramDiv);
-        });
-    }
-}
-
+                    nextProgramsContainer.appendChild(nextProgramDiv);
+                });
+            }
+        }
 
 
 
@@ -315,12 +354,7 @@ async function updateSidebarFromM3U(data) {
     checkStreamStatus();
 }
 
-// Beispiel für eine einfache Methode zum Abrufen von Programm-Informationen
-async function getCurrentProgram(channelId) {
-    // Beispiel-Daten, diese Funktion sollte durch einen echten Abruf der EPG-Daten ersetzt werden
-    // Es wird davon ausgegangen, dass `epgData` global verfügbar ist
-    return findCurrentProgram(channelId);
-}
+
 
 
 
@@ -353,6 +387,25 @@ function checkStreamStatus() {
     });
 }
 
+
+// filter-online-button
+document.addEventListener('DOMContentLoaded', function () {
+    const filterOnlineButton = document.getElementById('filter-online-button');
+
+    filterOnlineButton.addEventListener('click', function () {
+        const items = document.querySelectorAll('#sidebar-list li');
+        items.forEach(item => {
+            const channelInfo = item.querySelector('.channel-info');
+            if (channelInfo && channelInfo.classList.contains('online')) {
+                item.style.display = ''; // Zeige online Sender
+            } else {
+                item.style.display = 'none'; // Verstecke nicht-online Sender
+            }
+        });
+    });
+});
+
+// Deine bestehende checkStreamStatus-Funktion bleibt unverändert.
 
 
 // Ereignisbehandler für Klicks auf Sender
@@ -663,35 +716,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-// Funktion zum Abspielen eines Streams im Video-Player
-function playStream(streamURL) {
-    const videoPlayer = document.getElementById('video-player');
-
-    if (Hls.isSupported() && streamURL.endsWith('.m3u8')) {
-        // HLS für Safari und andere Browser, die es unterstützen
-        const hls = new Hls();
-        hls.loadSource(streamURL);
-        hls.attachMedia(videoPlayer);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-            videoPlayer.play();
-        });
-    } else if (typeof dashjs !== 'undefined' && typeof dashjs.MediaPlayer !== 'undefined' && typeof dashjs.MediaPlayer().isTypeSupported === 'function' && dashjs.MediaPlayer().isTypeSupported('application/dash+xml') && streamURL.endsWith('.mpd')) {
-        // MPEG-DASH für Chrome, Firefox und andere Browser, die es unterstützen
-        const dashPlayer = dashjs.MediaPlayer().create();
-        dashPlayer.initialize(videoPlayer, streamURL, true);
-    } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-        // Direktes HLS für Safari
-        videoPlayer.src = streamURL;
-        videoPlayer.addEventListener('loadedmetadata', function () {
-            videoPlayer.play();
-        });
-    } else if (videoPlayer.canPlayType('video/mp4') || videoPlayer.canPlayType('video/webm')) {
-        // Direktes MP4- oder WebM-Streaming für andere Browser
-        videoPlayer.src = streamURL;
-        videoPlayer.play();
-    } else {
-        console.error('Stream-Format wird vom aktuellen Browser nicht unterstützt.');
-    }
-}
 
