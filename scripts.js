@@ -1,3 +1,4 @@
+
 // Funktion zum Laden der Playlist.m3u und Aktualisieren der Sidebar
 function loadMyPlaylist() {
     fetch('playlist.m3u')
@@ -8,7 +9,7 @@ function loadMyPlaylist() {
 
 // Funktion zum Laden der externen Playlist und Aktualisieren der Sidebar
 function loadExternalPlaylist() {
-    fetch('http://habeto.xyz:8080/get.php?username=xxxrestream&password=fghiBrdf55&type=m3u_plus&output=ts')
+    fetch('https://raw.githubusercontent.com/tonis1000/Tonis/refs/heads/main/Robots/Playlist3.m3u')
         .then(response => response.text())
         .then(data => updateSidebarFromM3U(data))
         .catch(error => console.error('Fehler beim Laden der externen Playlist:', error));
@@ -475,13 +476,12 @@ function updateClock() {
     document.getElementById('uhrzeit').textContent = uhrzeit;
 }
 
-
-
 // Funktion zum Abspielen eines Streams im Video-Player
 function playStream(streamURL, subtitleURL) {
     const videoPlayer = document.getElementById('video-player');
     const subtitleTrack = document.getElementById('subtitle-track');
 
+    // Untertitel-Setup
     if (subtitleURL) {
         subtitleTrack.src = subtitleURL;
         subtitleTrack.track.mode = 'showing'; // Untertitel anzeigen
@@ -490,24 +490,30 @@ function playStream(streamURL, subtitleURL) {
         subtitleTrack.track.mode = 'hidden'; // Untertitel ausblenden
     }
 
+    // HLS.js-Integration
     if (Hls.isSupported() && streamURL.endsWith('.m3u8')) {
-        // HLS für Safari und andere Browser, die es unterstützen
         const hls = new Hls();
         hls.loadSource(streamURL);
         hls.attachMedia(videoPlayer);
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
             videoPlayer.play();
         });
-    } else if (typeof dashjs !== 'undefined' && typeof dashjs.MediaPlayer !== 'undefined' && typeof dashjs.MediaPlayer().isTypeSupported === 'function' && dashjs.MediaPlayer().isTypeSupported('application/dash+xml') && streamURL.endsWith('.mpd')) {
-        // MPEG-DASH für Chrome, Firefox und andere Browser, die es unterstützen
-        const dashPlayer = dashjs.MediaPlayer().create();
-        dashPlayer.initialize(videoPlayer, streamURL, true);
-    } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+    } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl') && streamURL.endsWith('.m3u8')) {
         // Direktes HLS für Safari
         videoPlayer.src = streamURL;
         videoPlayer.addEventListener('loadedmetadata', function () {
             videoPlayer.play();
         });
+    } else if (typeof dashjs !== 'undefined' && dashjs.MediaPlayer) {
+        const dashPlayer = dashjs.MediaPlayer().create();
+
+        // Überprüfe, ob das DASH-Format unterstützt wird
+        if (dashPlayer.isTypeSupported('application/dash+xml') && streamURL.endsWith('.mpd')) {
+            // MPEG-DASH für unterstützte Browser
+            dashPlayer.initialize(videoPlayer, streamURL, true);
+        } else {
+            console.error('DASH-Format wird vom aktuellen Browser nicht unterstützt oder die URL ist ungültig.');
+        }
     } else if (videoPlayer.canPlayType('video/mp4') || videoPlayer.canPlayType('video/webm')) {
         // Direktes MP4- oder WebM-Streaming für andere Browser
         videoPlayer.src = streamURL;
@@ -516,8 +522,6 @@ function playStream(streamURL, subtitleURL) {
         console.error('Stream-Format wird vom aktuellen Browser nicht unterstützt.');
     }
 }
-
-
 
 
 
@@ -676,44 +680,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    const filterOnlineButton = document.getElementById('filter-online-button');
 
-
-
-
-
-// Funktion zum Filtern der Senderliste und Abspielen des ersten sichtbaren Ergebnisses bei Enter
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('search-input');
-
-    // Event-Listener für die Eingabe im Suchfeld
-    searchInput.addEventListener('input', function() {
-        const filter = searchInput.value.toLowerCase();
-        const sidebarList = document.getElementById('sidebar-list');
-        const items = sidebarList.getElementsByTagName('li');
-
-        let firstVisibleItem = null;
-
-        Array.from(items).forEach(item => {
-            const text = item.textContent || item.innerText;
-            if (text.toLowerCase().includes(filter)) {
-                item.style.display = ''; // Zeige den Eintrag
-                if (!firstVisibleItem) {
-                    firstVisibleItem = item; // Setze das erste sichtbare Element
-                }
+    // Event-Listener für den Klick auf den Filter-Button
+    filterOnlineButton.addEventListener('click', function () {
+        const items = document.querySelectorAll('#sidebar-list li'); // Alle Listeneinträge in der Sidebar abrufen
+        items.forEach(item => {
+            const channelInfo = item.querySelector('.channel-info'); // Suche nach dem Channel-Info-Element in jedem Listeneintrag
+            if (channelInfo && channelInfo.classList.contains('online')) {
+                item.style.display = ''; // Zeige den Eintrag, wenn der Sender online ist
             } else {
-                item.style.display = 'none'; // Verstecke den Eintrag
-            }
-        });
-
-        // Event-Listener für die Enter-Taste
-        searchInput.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                if (firstVisibleItem) {
-                    const streamURL = firstVisibleItem.querySelector('.channel-info').dataset.stream;
-                    playStream(streamURL);
-                }
+                item.style.display = 'none'; // Verstecke den Eintrag, wenn der Sender offline ist
             }
         });
     });
 });
 
+
+const showAllButton = document.getElementById('show-all-button');
+
+showAllButton.addEventListener('click', function () {
+    const items = document.querySelectorAll('#sidebar-list li');
+    items.forEach(item => {
+        item.style.display = ''; // Zeige alle Sender an
+    });
+});
