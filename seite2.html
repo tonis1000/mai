@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tonis TV</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dunkler Hintergrund */
+            color: #ffffff; /* Helle Schriftfarbe */
+            display: flex;
+            height: 100vh;
+            overflow: hidden; /* Verhindert das Scrollen */
+        }
+
+        /* Container für die Sidebar und den Inhalt */
+        .container {
+            display: flex;
+            flex-direction: column; /* Vertikale Anordnung für die Hauptkategorien */
+            width: 100%;
+        }
+
+        /* Hauptkategorien über der Sidebar */
+        .categories {
+            background-color: #1f1f1f;
+            display: flex;
+            align-items: center; /* Vertikal zentrieren */
+            padding: 10px 20px; /* Padding hinzufügen */
+        }
+
+        .categories button {
+            padding: 10px 20px;
+            background-color: #3a3a3a; /* Standardfarbe für andere Buttons */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px; /* Abgerundete Ecken */
+            cursor: pointer;
+            margin-right: 15px; /* Abstand zwischen den Buttons */
+            transition: background-color 0.3s; /* Sanfter Übergang für Hover */
+        }
+
+        .categories button:first-child {
+            background-color: #4CAF50; /* Grüner Farbton für den Startseite-Button */
+        }
+
+        .categories button:first-child:hover {
+            background-color: #45a049; /* Dunklerer Farbton beim Hover */
+        }
+
+        /* Platz für den Namen des geklickten Buttons */
+        .current-name {
+            margin-left: 50px; /* Abstand von 50px nach den Buttons */
+            font-weight: bold;
+            font-size: 1.2em; /* Größere Schriftgröße */
+        }
+
+        /* Platz für das URL-Textfeld */
+        .url-container {
+            margin-left: 10px; /* Abstand von 10px nach dem Namen */
+            display: flex;
+            align-items: center;
+        }
+
+        /* Styling für das URL-Textfeld */
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: none;
+            border-radius: 5px; /* Abgerundete Ecken */
+            margin-right: 10px; /* Abstand zum Play-Button */
+            background-color: #3a3a3a; /* Dunkler Hintergrund */
+            color: #ffffff; /* Helle Schriftfarbe */
+        }
+
+        /* Styling für den Play-Button */
+        .play-button {
+            padding: 10px 15px;
+            background-color: #4CAF50; /* Grüner Farbton */
+            color: white;
+            border: none;
+            border-radius: 5px; /* Abgerundete Ecken */
+            cursor: pointer;
+            transition: background-color 0.3s; /* Sanfter Übergang für Hover */
+        }
+
+        .play-button:hover {
+            background-color: #45a049; /* Dunklerer Farbton beim Hover */
+        }
+
+        /* Container für die Sidebar und den Inhalt */
+        .main-content {
+            display: flex; /* Flexbox für Sidebar und Iframe */
+            flex-grow: 1; /* Füllt den verfügbaren Platz */
+        }
+
+        /* Seitenleiste */
+        .sidebar {
+            width: 150px; /* Breite der Sidebar */
+            background-color: #1f1f1f; /* Dunkler Hintergrund */
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Links ausrichten */
+            margin-top: 0; /* Keinen zusätzlichen Platz für die Hauptkategorien, da wir die Sidebar gleich darunter haben */
+            overflow-y: auto; /* Scrollen innerhalb der Sidebar erlauben */
+        }
+
+        .sidebar button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #3a3a3a;
+            color: white;
+            border: none;
+            border-radius: 5px; /* Abgerundete Ecken */
+            cursor: pointer;
+            transition: background-color 0.3s; /* Sanfter Übergang für Hover */
+        }
+
+        .sidebar button:hover {
+            background-color: #555555; /* Dunklerer Farbton beim Hover */
+        }
+
+        /* Bereich für den Inhalt */
+        .content {
+            flex-grow: 1; /* Nimmt den verbleibenden Platz ein */
+            background-color: #212121; /* Dunkler Inhaltshintergrund */
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Verhindert Scrollen im Inhalt */
+        }
+
+        /* Styling für den eingebetteten Stream */
+        iframe {
+            width: 100%; /* Breite anpassen, um die Sidebar zu berücksichtigen */
+            height: 780px; /* Feste Höhe */
+            border: none;
+        }
+
+        /* Responsive Design für kleinere Bildschirme */
+        @media (max-width: 600px) {
+            .categories {
+                flex-direction: column; /* Vertikale Anordnung */
+                align-items: flex-start; /* Links ausrichten */
+            }
+
+            .categories button {
+                margin-bottom: 10px; /* Abstand zwischen den Buttons */
+            }
+
+            .url-container {
+                flex-direction: column; /* Vertikale Anordnung */
+                align-items: flex-start; /* Links ausrichten */
+                margin-left: 0; /* Kein Abstand */
+            }
+
+            input[type="text"] {
+                width: 100%; /* Volle Breite auf kleineren Bildschirmen */
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Container für die Sidebar und den Inhalt -->
+    <div class="container">
+        <!-- Hauptkategorien über der Sidebar -->
+        <div class="categories">
+            <button onclick="window.location.href='index.html';">Startseite</button>
+            <button onclick="showCategory('sport')">Sport</button>
+            <button onclick="showCategory('movies')">Movies</button>
+            <div class="current-name" id="currentName">Aktuell: </div>
+            <div class="url-container">
+                <input type="text" id="urlInput" placeholder="URL hier eingeben" />
+                <button class="play-button" onclick="playUrl()">Play</button>
+            </div>
+        </div>
+
+        <!-- Container für die Sidebar und den Inhalt -->
+        <div class="main-content">
+            <!-- Linke Seitenleiste mit Buttons -->
+            <div class="sidebar" id="sidebar">
+                <!-- Die Unterkategorien werden hier dynamisch geladen -->
+            </div>
+            
+            <!-- Bereich für den Stream -->
+            <div class="content">
+                <iframe id="streamFrame" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadStreamWithSettings(url, buttonName) {
+            const iframe = document.getElementById('streamFrame');
+            
+            // URL mit Autoplay-Parameter ergänzen, falls noch nicht vorhanden
+            if (!url.includes('autoplay')) {
+                url += (url.includes('?') ? '&' : '?') + 'autoplay=1';
+            }
+
+            iframe.src = url;
+            iframe.marginHeight = "0";
+            iframe.marginWidth = "0";
+            iframe.name = "iframe_a";
+            iframe.width = "100%";
+            iframe.height = "100%";
+            iframe.frameBorder = "0";
+            iframe.allowFullscreen = true;
+
+            // Aktuellen Namen des geklickten Buttons anzeigen
+            document.getElementById('currentName').innerText = `Aktuell: ${buttonName}`;
+            // URL in das Textfeld einfügen
+            document.getElementById('urlInput').value = url;
+
+            // Scrollen für alle Filme-URLs aktivieren
+            if (document.getElementById('sidebar').classList.contains('movies-category')) {
+                iframe.scrolling = "yes";  // Scrollen für alle Filme erlauben
+            } else {
+                iframe.scrolling = "no";   // Scrollen für alle anderen Seiten deaktivieren
+            }
+        }
+
+        function showCategory(category) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = ''; // Leert die Sidebar
+
+            // Entferne vorherige Kategorie-Klassen
+            sidebar.classList.remove('movies-category', 'sport-category');
+
+            // Je nach gewählter Kategorie fügen wir Unterkategorien hinzu
+            if (category === 'sport') {
+                sidebar.classList.add('sport-category');
+                sidebar.innerHTML += `
+                    <button onclick="loadStreamWithSettings('http://www.anacon.org/app/chans/gr/ert1s2.php', 'ERT 1')">ERT 1</button>
+                    <button onclick="loadStreamWithSettings('http://www.anacon.org/app/chans/gr/ert2s2.php', 'ERT 2')">ERT 2</button>
+                    <button onclick="loadStreamWithSettings('https://hdstreamz.net/watch/super-sport-1-hd', 'Super Sport 1 HD')">Super Sport 1 HD</button>
+                `;
+            } else if (category === 'movies') {
+                sidebar.classList.add('movies-category');
+                sidebar.innerHTML += `
+                    <button onclick="loadStreamWithSettings('http://www.anacon.org/app/chans/gr/movies1.php', 'Movies 1')">Movies 1</button>
+                    <button onclick="loadStreamWithSettings('http://www.anacon.org/app/chans/gr/movies2.php', 'Movies 2')">Movies 2</button>
+                    <button onclick="loadStreamWithSettings('http://www.anacon.org/app/chans/gr/movies3.php', 'Movies 3')">Movies 3</button>
+                `;
+            }
+        }
+
+        function playUrl() {
+            const url = document.getElementById('urlInput').value;
+            loadStreamWithSettings(url, 'Benutzerdefiniert');
+        }
+    </script>
+</body>
+</html>
