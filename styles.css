@@ -141,6 +141,48 @@ button:disabled {
     
 }
 
+
+#filter-online-button,
+#show-all-button {
+    padding: 6px 10px; /* Innenabstand anpassen */
+    font-size: 12px; /* Schriftgröße anpassen */
+    border: none; /* Rahmen entfernen */
+    border-radius: 5px; /* Ecken abrunden */
+    background-color: #4CAF50; /* Hintergrundfarbe */
+    color: white; /* Textfarbe */
+    cursor: pointer; /* Zeiger bei Hover */
+    transition: background-color 0.3s; /* Sanfter Übergang für Hover-Effekt */
+    margin-bottom: 8px;
+    margin-top: 2px;
+}
+
+/* Stil für den Online-Button */
+#filter-online-button {
+    background-color: #4CAF50; /* Grüner Hintergrund */
+    color: white; /* Weiße Schriftfarbe */
+}
+
+#filter-online-button:hover {
+    background-color: #45a049; /* Dunkleres Grün bei Hover */
+    transform: translateY(-2px); /* Leichter Aufwärtsbewegungseffekt */
+}
+
+/* Stil für den Alle-Button */
+#show-all-button {
+    background-color: #007BFF; /* Blauer Hintergrund */
+    color: white; /* Weiße Schriftfarbe */
+}
+
+#show-all-button:hover {
+    background-color: #0056b3; /* Dunkleres Blau bei Hover */
+    transform: translateY(-2px); /* Leichter Aufwärtsbewegungseffekt */
+}
+
+
+
+
+
+
 /* Stil für die Senderinformationen innerhalb der Sidebar */
 .channel-info {
     display: flex;
@@ -414,9 +456,22 @@ div.next-program h4 {
 
 
 
+        /* Nur den Button im Link mit der ID #seite2-link ansprechen */
+        #seite2-link button {
+            background-color: #4CAF50; /* Beispiel für Button-Style */
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
 
-
-
+        #seite2-link button:hover {
+            background-color: #45a049; /* Hover-Effekt */
+        }
 
 
 
