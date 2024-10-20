@@ -194,6 +194,16 @@
         </div>
     </div>
 
+
+    <!-- Dein iFrame mit sandbox-Attribut -->
+<iframe id="myIframe" 
+        src="https://www.anacon.org/app/chans/gr/ert1s2.php?autoplay=1"
+        sandbox="allow-scripts allow-same-origin allow-top-navigation" 
+        width="100%" 
+        height="600px">
+</iframe>
+
+    
     <script>
         function loadStreamWithSettings(url, buttonName) {
             const iframe = document.getElementById('streamFrame');
@@ -271,6 +281,62 @@
             const url = document.getElementById('urlInput').value;
             loadStreamWithSettings(url, 'Eingegebene URL');
         }
+
+        // JavaScript zur Überwachung und Kontrolle dynamischer Links im iFrame
+window.onload = function() {
+    var iframe = document.getElementById('myIframe');
+    
+    iframe.onload = function() {
+        try {
+            // Funktion zum Überwachen und Ersetzen aller Links
+            function monitorIframeLinks() {
+                var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                
+                // Überprüfe alle Links im iFrame
+                var links = iframeDocument.getElementsByTagName('a');
+                
+                for (var i = 0; i < links.length; i++) {
+                    links[i].addEventListener('click', function(event) {
+                        event.preventDefault(); // Standardverhalten verhindern
+                        var targetUrl = this.href; // Ziel-URL des Links
+                        
+                        // Lade den neuen Inhalt im iFrame neu
+                        iframe.src = targetUrl;
+                    });
+                }
+            }
+
+            // Initiale Überprüfung nach dem Laden des iFrames
+            monitorIframeLinks();
+
+            // Dynamische Änderungen überwachen
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' || mutation.type === 'attributes') {
+                        monitorIframeLinks();
+                    }
+                });
+            });
+
+            // Startet die Überwachung für Änderungen im iFrame
+            observer.observe(iframe.contentDocument, {
+                childList: true, // Überwacht Änderungen an den Kindelementen
+                subtree: true,   // Überwacht den gesamten Baum, nicht nur die Ebene
+                attributes: true // Überwacht Änderungen an den Attributen
+            });
+
+            // Schutz gegen window.top.location Manipulation
+            Object.defineProperty(iframe.contentWindow, 'top', {
+                get: function() { return window; }, // Verhindert Zugriff auf `window.top`
+                set: function() {} // Blockiert Änderungen
+            });
+
+        } catch (e) {
+            console.warn('Zugriff auf iFrame blockiert.', e);
+        }
+    };
+};
+        
     </script>
 </body>
 </html>
