@@ -706,3 +706,42 @@ showAllButton.addEventListener('click', function () {
         item.style.display = ''; // Zeige alle Sender an
     });
 });
+
+
+
+
+// Funktion zum Filtern der Senderliste und Abspielen des ersten sichtbaren Ergebnisses bei Enter
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-input');
+
+    // Event-Listener für die Eingabe im Suchfeld
+    searchInput.addEventListener('input', function() {
+        const filter = searchInput.value.toLowerCase();
+        const sidebarList = document.getElementById('sidebar-list');
+        const items = sidebarList.getElementsByTagName('li');
+
+        let firstVisibleItem = null;
+
+        Array.from(items).forEach(item => {
+            const text = item.textContent || item.innerText;
+            if (text.toLowerCase().includes(filter)) {
+                item.style.display = ''; // Zeige den Eintrag
+                if (!firstVisibleItem) {
+                    firstVisibleItem = item; // Setze das erste sichtbare Element
+                }
+            } else {
+                item.style.display = 'none'; // Verstecke den Eintrag
+            }
+        });
+
+        // Event-Listener für die Enter-Taste
+        searchInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                if (firstVisibleItem) {
+                    const streamURL = firstVisibleItem.querySelector('.channel-info').dataset.stream;
+                    playStream(streamURL);
+                }
+            }
+        });
+    });
+});
