@@ -504,24 +504,19 @@ function playStream(streamURL, subtitleURL) {
         videoPlayer.addEventListener('loadedmetadata', function () {
             videoPlayer.play();
         });
-    } else if (typeof dashjs !== 'undefined' && dashjs.MediaPlayer) {
+    } else if (streamURL.endsWith('.mpd')) {
+        // MPEG-DASH-Streaming mit dash.js
         const dashPlayer = dashjs.MediaPlayer().create();
-
-        // Überprüfe, ob das DASH-Format unterstützt wird
-        if (dashPlayer.isTypeSupported('application/dash+xml') && streamURL.endsWith('.mpd')) {
-            // MPEG-DASH für unterstützte Browser
-            dashPlayer.initialize(videoPlayer, streamURL, true);
-        } else {
-            console.error('DASH-Format wird vom aktuellen Browser nicht unterstützt oder die URL ist ungültig.');
-        }
+        dashPlayer.initialize(videoPlayer, streamURL, true);
     } else if (videoPlayer.canPlayType('video/mp4') || videoPlayer.canPlayType('video/webm')) {
-        // Direktes MP4- oder WebM-Streaming für andere Browser
+        // Direktes MP4- oder WebM-Streaming
         videoPlayer.src = streamURL;
         videoPlayer.play();
     } else {
         console.error('Stream-Format wird vom aktuellen Browser nicht unterstützt.');
     }
 }
+
 
 
 
