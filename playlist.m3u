@@ -1,7 +1,7 @@
 #EXTM3U
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
-https://cdn1.smart-tv-data.com/live/ert1/playlist.m3u8
+https://eu5cdn.overotm.com/abr_amd10/ert1/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
 https://ertflix.s.llnwi.net/ertlive/ert1/clrdef24723b/ERT-audio_104621_und=104400-video=5000000.m3u8
