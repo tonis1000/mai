@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tonis TV</title>
     <style>
+        /* Allgemeine Stile */
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
@@ -15,10 +16,9 @@
             overflow: hidden; /* Verhindert das Scrollen */
         }
 
-        /* Container für die Sidebar und den Inhalt */
         .container {
             display: flex;
-            flex-direction: column; /* Vertikale Anordnung für die Hauptkategorien */
+            flex-direction: column;
             width: 100%;
         }
 
@@ -26,85 +26,79 @@
         .categories {
             background-color: #1f1f1f;
             display: flex;
-            align-items: center; /* Vertikal zentrieren */
-            padding: 10px 20px; /* Padding hinzufügen */
+            align-items: center;
+            padding: 10px 20px;
         }
 
         .categories button {
             padding: 10px 20px;
-            background-color: #3a3a3a; /* Standardfarbe für andere Buttons */
+            background-color: #3a3a3a;
             color: #ffffff;
             border: none;
-            border-radius: 5px; /* Abgerundete Ecken */
+            border-radius: 5px;
             cursor: pointer;
-            margin-right: 15px; /* Abstand zwischen den Buttons */
-            transition: background-color 0.3s; /* Sanfter Übergang für Hover */
+            margin-right: 15px;
+            transition: background-color 0.3s;
         }
 
         .categories button:first-child {
-            background-color: #4CAF50; /* Grüner Farbton für den Startseite-Button */
+            background-color: #4CAF50;
         }
 
         .categories button:first-child:hover {
-            background-color: #45a049; /* Dunklerer Farbton beim Hover */
+            background-color: #45a049;
         }
 
-        /* Platz für den Namen des geklickten Buttons */
         .current-name {
-            margin-left: 50px; /* Abstand von 50px nach den Buttons */
+            margin-left: 50px;
             font-weight: bold;
-            font-size: 1.2em; /* Größere Schriftgröße */
+            font-size: 1.2em;
         }
 
-        /* Platz für das URL-Textfeld */
         .url-container {
-            margin-left: 10px; /* Abstand von 10px nach dem Namen */
+            margin-left: 10px;
             display: flex;
             align-items: center;
         }
 
-        /* Styling für das URL-Textfeld */
         input[type="text"] {
             padding: 10px;
             width: 300px;
             border: none;
-            border-radius: 5px; /* Abgerundete Ecken */
-            margin-right: 10px; /* Abstand zum Play-Button */
-            background-color: #3a3a3a; /* Dunkler Hintergrund */
-            color: #ffffff; /* Helle Schriftfarbe */
+            border-radius: 5px;
+            margin-right: 10px;
+            background-color: #3a3a3a;
+            color: #ffffff;
         }
 
-        /* Styling für den Play-Button */
         .play-button {
             padding: 10px 15px;
-            background-color: #4CAF50; /* Grüner Farbton */
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px; /* Abgerundete Ecken */
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s; /* Sanfter Übergang für Hover */
+            transition: background-color 0.3s;
         }
 
         .play-button:hover {
-            background-color: #45a049; /* Dunklerer Farbton beim Hover */
+            background-color: #45a049;
         }
 
-        /* Container für die Sidebar und den Inhalt */
+        /* Hauptinhalt */
         .main-content {
-            display: flex; /* Flexbox für Sidebar und Iframe */
-            flex-grow: 1; /* Füllt den verfügbaren Platz */
+            display: flex;
+            flex-grow: 1;
         }
 
-        /* Seitenleiste */
         .sidebar {
-            width: 150px; /* Breite der Sidebar */
-            background-color: #1f1f1f; /* Dunkler Hintergrund */
+            width: 150px;
+            background-color: #1f1f1f;
             padding: 15px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Links ausrichten */
-            margin-top: 0; /* Keinen zusätzlichen Platz für die Hauptkategorien */
-            overflow-y: auto; /* Scrollen innerhalb der Sidebar erlauben */
+            align-items: flex-start;
+            overflow-y: auto;
         }
 
         .sidebar button {
@@ -114,61 +108,56 @@
             background-color: #3a3a3a;
             color: white;
             border: none;
-            border-radius: 5px; /* Abgerundete Ecken */
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s; /* Sanfter Übergang für Hover */
+            transition: background-color 0.3s;
         }
 
         .sidebar button:hover {
-            background-color: #555555; /* Dunklerer Farbton beim Hover */
+            background-color: #555555;
         }
 
-        /* Bereich für den Inhalt */
         .content {
-            flex-grow: 1; /* Nimmt den verbleibenden Platz ein */
-            background-color: #212121; /* Dunkler Inhaltshintergrund */
+            flex-grow: 1;
+            background-color: #212121;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Verhindert Scrollen im Inhalt */
         }
 
-        /* Styling für den eingebetteten Stream */
         iframe {
-            width: 100%; /* Breite anpassen, um die Sidebar zu berücksichtigen */
-            height: 760px; /* Feste Höhe */
+            width: 100%;
+            height: 760px;
             border: none;
         }
 
-        /* Responsive Design für kleinere Bildschirme */
+        /* Responsive Design */
         @media (max-width: 600px) {
             .categories {
-                flex-direction: column; /* Vertikale Anordnung */
-                align-items: flex-start; /* Links ausrichten */
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .categories button {
-                margin-bottom: 10px; /* Abstand zwischen den Buttons */
+                margin-bottom: 10px;
             }
 
             .url-container {
-                flex-direction: column; /* Vertikale Anordnung */
-                align-items: flex-start; /* Links ausrichten */
-                margin-left: 0; /* Kein Abstand */
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 0;
             }
 
             input[type="text"] {
-                width: 100%; /* Volle Breite auf kleineren Bildschirmen */
+                width: 100%;
             }
         }
-        
     </style>
 </head>
 <body>
-    <!-- Container für die Sidebar und den Inhalt -->
     <div class="container">
-        <!-- Hauptkategorien über der Sidebar -->
+        <!-- Hauptkategorien -->
         <div class="categories">
             <button onclick="window.location.href='index.html';">Startseite</button>
             <button onclick="showCategory('sport')">Sport</button>
@@ -180,14 +169,12 @@
             </div>
         </div>
 
-        <!-- Container für die Sidebar und den Inhalt -->
+        <!-- Hauptinhalt -->
         <div class="main-content">
-            <!-- Linke Seitenleiste mit Buttons -->
-            <div class="sidebar" id="sidebar">
-                <!-- Die Unterkategorien werden hier dynamisch geladen -->
-            </div>
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar"></div>
             
-            <!-- Bereich für den Stream -->
+            <!-- Inhalt -->
             <div class="content">
                 <iframe id="streamFrame" src=""></iframe>
             </div>
@@ -195,52 +182,24 @@
     </div>
 
     <script>
-function loadStreamWithSettings(url, buttonName) {
-    const iframe = document.getElementById('streamFrame');
-    if (!url.includes('autoplay')) {
-        url += (url.includes('?') ? '&' : '?') + 'autoplay=1';
-    }
-    iframe.src = url;
-    document.getElementById('currentName').innerText = `Aktuell: ${buttonName || "Benutzerdefiniert"}`;
-    document.getElementById('urlInput').value = url;
-}
-
-
-            iframe.src = url;
-            iframe.marginHeight = "0";
-            iframe.marginWidth = "0";
-            iframe.name = "iframe_a";
-            iframe.width = "100%";
-            iframe.height = "100%";
-            iframe.frameBorder = "0";
-            iframe.allowFullscreen = true;
-
-            // Aktuellen Namen des geklickten Buttons anzeigen
-            document.getElementById('currentName').innerText = `Aktuell: ${buttonName}`;
-            // URL in das Textfeld einfügen
-            document.getElementById('urlInput').value = url;
-
-            // Scrollen für alle Filme-URLs aktivieren
-            if (document.getElementById('sidebar').classList.contains('movies-category')) {
-                iframe.scrolling = "yes";  // Scrollen für alle Filme erlauben
-            } else {
-                iframe.scrolling = "no";   // Scrollen für alle anderen Seiten deaktivieren
+        function loadStreamWithSettings(url, buttonName) {
+            const iframe = document.getElementById('streamFrame');
+            if (!url.includes('autoplay')) {
+                url += (url.includes('?') ? '&' : '?') + 'autoplay=1';
             }
-         }
+            iframe.src = url;
+            document.getElementById('currentName').innerText = `Aktuell: ${buttonName}`;
+            document.getElementById('urlInput').value = url;
         }
 
         function showCategory(category) {
             const sidebar = document.getElementById('sidebar');
-            sidebar.innerHTML = ''; // Leert die Sidebar
+            sidebar.innerHTML = '';
+            sidebar.className = 'sidebar'; // Reset classes
 
-            // Entferne vorherige Kategorie-Klassen
-            sidebar.classList.remove('movies-category', 'sport-category');
-
-            // Je nach gewählter Kategorie fügen wir Unterkategorien hinzu
             if (category === 'sport') {
-                sidebar.classList.add('sport-category');
                 sidebar.innerHTML += `
-                    <button onclick="loadStreamWithSettings('https://embed.vindral.com/?core.channelId=alteregomedia_megatv1_ci_6cc490c7-e5c6-486b-acf0-9bb9c20fa670&core.minBufferTime=2000&player.aspectRatio=16:9', 'Mega TV')">Mega TV</button>
+                     <button onclick="loadStreamWithSettings('https://embed.vindral.com/?core.channelId=alteregomedia_megatv1_ci_6cc490c7-e5c6-486b-acf0-9bb9c20fa670&core.minBufferTime=2000&player.aspectRatio=16:9', 'Mega TV')">Mega TV</button>
                     <button onclick="loadStreamWithSettings('https://www.anacon.org/app/chans/gr/ert1s2.php', 'ERT 1')">ERT 1</button>
                     <button onclick="loadStreamWithSettings('https://www.anacon.org/app/chans/gr/ert2s2.php', 'ERT 2')">ERT 2</button>
                     <button onclick="loadStreamWithSettings('https://sportskeeda.vip/embed/stream-622.php', 'CSpor1')">CSpor1</button>
@@ -258,23 +217,23 @@ function loadStreamWithSettings(url, buttonName) {
                     <button onclick="loadStreamWithSettings('https://sportskeeda.vip/embed/stream-634.php', 'NVSpor4')">NVSpor4</button>
                     <button onclick="loadStreamWithSettings('https://sportskeeda.vip/embed/stream-635.php', 'NVSpor5')">NVSpor5</button>
                     <button onclick="loadStreamWithSettings('https://sportskeeda.vip/embed/stream-636.php', 'NVSpor6')">NVSpor6</button>
+
                 `;
             } else if (category === 'movies') {
-                sidebar.classList.add('movies-category');
                 sidebar.innerHTML += `
-                    <button onclick="loadStreamWithSettings('https://movie7.life/movies/')">movie7</button>
+                   <button onclick="loadStreamWithSettings('https://movie7.life/movies/')">movie7</button>
                     <button onclick="loadStreamWithSettings('https://xrysoi.pro/')">xrysoi</button>
                     <button onclick="loadStreamWithSettings('https://gamatotv.info/')">gamatotv</button>
                     <button onclick="loadStreamWithSettings('https://greektube.pro/homepage')">greektube</button>
                     <button onclick="loadStreamWithSettings('https://hurawatchz.to/home')">hurawatchz</button>
                     <button onclick="loadStreamWithSettings('https://an1me.io/')">an1me</button>
-                `;
+
             }
         }
 
         function playUrl() {
             const url = document.getElementById('urlInput').value;
-            const buttonName = url.split('/').pop(); // Den Namen aus der URL extrahieren
+            const buttonName = url.split('/').pop();
             loadStreamWithSettings(url, buttonName);
         }
     </script>
