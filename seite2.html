@@ -195,13 +195,16 @@
     </div>
 
     <script>
-        function loadStreamWithSettings(url, buttonName) {
-            const iframe = document.getElementById('streamFrame');
-            
-            // URL mit Autoplay-Parameter ergänzen, falls noch nicht vorhanden
-            if (!url.includes('autoplay')) {
-                url += (url.includes('?') ? '&' : '?') + 'autoplay=1';
-            }
+function loadStreamWithSettings(url, buttonName) {
+    const iframe = document.getElementById('streamFrame');
+    if (!url.includes('autoplay')) {
+        url += (url.includes('?') ? '&' : '?') + 'autoplay=1';
+    }
+    iframe.src = url;
+    document.getElementById('currentName').innerText = `Aktuell: ${buttonName || "Benutzerdefiniert"}`;
+    document.getElementById('urlInput').value = url;
+}
+
 
             iframe.src = url;
             iframe.marginHeight = "0";
