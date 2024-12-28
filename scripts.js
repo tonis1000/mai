@@ -283,6 +283,16 @@ sidebarList.addEventListener('click', function (event) {
 
 
 
+
+function getProxiedURL(url) {
+    const workerURL = 'https://stream-proxy.atonis.workers.dev/';
+    return `${workerURL}?url=${encodeURIComponent(url)}`;
+}
+
+
+
+
+
 // Funktion zum Aktualisieren der Sidebar von einer M3U-Datei
 async function updateSidebarFromM3U(data) {
     const sidebarList = document.getElementById('sidebar-list');
@@ -322,7 +332,8 @@ async function updateSidebarFromM3U(data) {
             const imgMatch = lines[i].match(/tvg-logo="([^"]+)"/);
             const imgURL = imgMatch ? imgMatch[1] : 'default_logo.png';
 
-            const streamURL = lines[i + 1].startsWith('http') ? lines[i + 1].trim() : null;
+            const originalStreamURL = lines[i + 1].startsWith('http') ? lines[i + 1].trim() : null;
+            const streamURL = originalStreamURL ? getProxiedURL(originalStreamURL) : null;
 
             if (streamURL) {
                 try {
@@ -354,6 +365,7 @@ async function updateSidebarFromM3U(data) {
 
     checkStreamStatus();
 }
+
 
 
 
