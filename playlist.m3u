@@ -90,7 +90,7 @@ https://web.onair-radio.eu/groovytv/groovytv/chunklist_w2146395179.m3u8
 #EXTINF:-1 tvg-id="NetMaxTV.gr" tvg-logo="https://i.imgur.com/ObjxuGj.jpg", NetMaxTV
 https://live.netmaxtv.com:8081/live/live/chunklist_w1335266248.m3u8
 
-#EXTINF:-1 tvg-id="MakedoniaTV.gr" tvg-logo="https://i.imgur.com/55NSQ50.png", Mak TV
+#EXTINF:-1 tvg-id="mtv" tvg-logo="https://i.imgur.com/55NSQ50.png", Mak TV
 https://dlm34ll53zqql.cloudfront.net/out/v1/d4177931deff4c7ba994b8126d153d9f/maktv.m3u8
 
 #EXTINF:-1 tvg-id="CinemaTime.gr" tvg-logo="https://i.ibb.co/bJGz0h3/cine1.jpg", Cinema Time 1
