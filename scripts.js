@@ -476,18 +476,29 @@ function updateClock() {
     document.getElementById('uhrzeit').textContent = uhrzeit;
 }
 
-// Funktion zum Abrufen der Stream-URL aus einer .strm-Datei
 async function fetchStreamFromSTRM(strmURL) {
     try {
         const response = await fetch(strmURL);
         const text = await response.text();
-        const streamURL = text.trim(); // Entfernt Leerzeichen oder Zeilenumbrüche
-        return streamURL;
+        console.log("Geladene .strm-Datei:", text); // Debugging
+
+        // Trenne die Zeilen und finde die erste echte URL
+        const lines = text.split("\n");
+        const streamURL = lines.find(line => line.startsWith("http")); 
+
+        if (streamURL) {
+            console.log("Extrahierte Stream-URL:", streamURL);
+            return streamURL.trim(); 
+        } else {
+            console.error("Keine gültige Stream-URL gefunden.");
+            return null;
+        }
     } catch (error) {
         console.error("Fehler beim Laden der .strm-Datei:", error);
         return null;
     }
 }
+
 
 // Funktion zum Abspielen eines Streams im Video-Player
 async function playSTRM(strmFileURL, subtitleURL) {
