@@ -476,7 +476,29 @@ function updateClock() {
     document.getElementById('uhrzeit').textContent = uhrzeit;
 }
 
+// Funktion zum Abrufen der Stream-URL aus einer .strm-Datei
+async function fetchStreamFromSTRM(strmURL) {
+    try {
+        const response = await fetch(strmURL);
+        const text = await response.text();
+        const streamURL = text.trim(); // Entfernt Leerzeichen oder Zeilenumbrüche
+        return streamURL;
+    } catch (error) {
+        console.error("Fehler beim Laden der .strm-Datei:", error);
+        return null;
+    }
+}
+
 // Funktion zum Abspielen eines Streams im Video-Player
+async function playSTRM(strmFileURL, subtitleURL) {
+    const streamURL = await fetchStreamFromSTRM(strmFileURL);
+    if (streamURL) {
+        playStream(streamURL, subtitleURL);
+    } else {
+        console.error("Kein gültiger Stream in der .strm-Datei gefunden.");
+    }
+}
+
 function playStream(streamURL, subtitleURL) {
     const videoPlayer = document.getElementById('video-player');
     const subtitleTrack = document.getElementById('subtitle-track');
