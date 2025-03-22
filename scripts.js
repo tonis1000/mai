@@ -480,15 +480,15 @@ async function fetchStreamFromSTRM(strmURL) {
     try {
         const response = await fetch(strmURL);
         const text = await response.text();
-        console.log("Geladene .strm-Datei:", text); // Debugging
+        console.log("Geladene .strm-Datei:", text); 
 
-        // Trenne die Zeilen und finde die erste echte URL
+        // Finde die erste gültige URL
         const lines = text.split("\n");
-        const streamURL = lines.find(line => line.startsWith("http")); 
+        const streamURL = lines.find(line => line.startsWith("http"));
 
         if (streamURL) {
             console.log("Extrahierte Stream-URL:", streamURL);
-            return streamURL.trim(); 
+            return streamURL.trim();
         } else {
             console.error("Keine gültige Stream-URL gefunden.");
             return null;
