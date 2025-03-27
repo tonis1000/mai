@@ -4,13 +4,13 @@
 https://ertflix.akamaized.net/ertlive/ert1/clrdef24723b/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
-https://ertflix.s.llnwi.net/ertlive/ert1/clrdef24723b/ERT-audio_104621_und=104400-video=5000000.m3u8
+https://wow.anixa.tv/live/ert1/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png", ERT2
 https://ertflix.akamaized.net/ertlive/ert2/clrdef24828z/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png", ERT2
-https://ertflix.s.llnwi.net/ertlive/ert2/clrdef24828z/ERT2-audio_104621_und=104400-video=5000000.m3u8
+https://wow.anixa.tv/live/ert2/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
 https://cdn1.smart-tv-data.com/vid/ert-3-hbbtv/playlist.m3u8
