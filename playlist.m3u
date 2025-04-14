@@ -1,7 +1,7 @@
 #EXTM3U
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
-https://ertflix.akamaized.net/ertlive/ert1/clrdef24723b/playlist.m3u8
+http://195.226.218.163/vid/ert1/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
 https://wow.anixa.tv/live/ert1/playlist.m3u8
