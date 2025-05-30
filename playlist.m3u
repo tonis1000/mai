@@ -3,6 +3,9 @@
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
 https://ertflix.akamaized.net/ertlive/ert1/clrdef24723b/playlist.m3u8
 
+#EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
+https://cdn4.smart-tv-data.com/vid/ert1/playlist.m3u8
+
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1 WEB
 http://www.anacon.org/app/chans/gr/ert1s2image.php
 
