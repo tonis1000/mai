@@ -37,7 +37,7 @@ https://ertflix.s.llnwi.net/ertlive/ertnews/default/index.m3u8
 https://ertflix.akamaized.net/ertlive/ertnews/default/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ant1" tvg-logo="https://i.imgur.com/V1w22Or.png", Ant1
-https://wow.anixa.tv/live/ant1/playlist.m3u8
+https://spark3.smart-tv-data.com/ant1HD/ant1HD/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ant1" tvg-logo="https://i.imgur.com/GTFFtOR.png", Ant1 HD
 https://cdn1.smart-tv-data.com/live/ant1_srt/playlist.m3u8
@@ -52,7 +52,7 @@ http://l2.cloudskep.com/ant1cm2/abr/playlist.m3u8
 https://alphatvlive.siliconweb.com/1/Y2Rsd1lUcUVoajcv/UVdCN25h/hls/live/playlist.m3u
 
 #EXTINF:-1 tvg-id="alpha" tvg-logo="https://i.imgur.com/6twzd38.png", AlphaTV
-https://alphatvlive2.siliconweb.com/alphatvlive/live_abr/playlist.m3u8
+https://spark3.smart-tv-data.com/alphaHD/alphaHD/playlist.m3u8
 
 #EXTINF:-1 tvg-id="alpha" tvg-logo="https://i.imgur.com/6twzd38.png", AlphaTV Bup
 https://cdn1.smart-tv-data.com/live/alpha/playlist.m3u8
@@ -85,7 +85,7 @@ https://embed.vindral.com/?core.channelId=alteregomedia_megatv1_ci_6cc490c7-e5c6
 https://livestar.siliconweb.com/media/star4/star4newhd.m3u8
 
 #EXTINF:-1 tvg-id="star" tvg-logo="https://i.imgur.com/6NUpxhr.png", Star TV
-https://livestar.siliconweb.com/media/star1/star1mediumhd.m3u8
+https://spark3.smart-tv-data.com/starHD/starHD/playlist.m3u8
 
 #EXTINF:-1 tvg-id="star" tvg-logo="https://i.imgur.com/6NUpxhr.png", Star TV1
 https://livestar.siliconweb.com/media/star1/star1.m3u8
