@@ -13,7 +13,7 @@ http://www.anacon.org/app/chans/gr/ert1s2image.php
 http://195.226.218.163/vid/ert1/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png",ERT2
-https://ertflix.akamaized.net/ertlive/ert2/clrdef24828z/playlist.m3u8
+https://spark3.smart-tv-data.com/vid/ert2hd/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png",ERT2 WEB
 http://www.anacon.org/app/chans/gr/ert2s2image.php
@@ -22,7 +22,7 @@ http://www.anacon.org/app/chans/gr/ert2s2image.php
 https://wow.anixa.tv/live/ert2/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
-https://cdn1.smart-tv-data.com/vid/ert-3-hbbtv/playlist.m3u8
+https://spark3.smart-tv-data.com/vid/ert3hd/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
 https://ertflix.akamaized.net/ertlive/ert3/clrdef24828n/playlist.m3u8
