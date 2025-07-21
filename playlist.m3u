@@ -102,7 +102,7 @@ https://s2.cystream.net/galanos/star/chunks.m3u8?nimblesessiontvg-id=783489&wmsA
 #EXTINF:-1 tvg-id="star" tvg-logo="https://i.imgur.com/6NUpxhr.png", Star WEB
 https://www.lakatamia.tv/app/chans/gr/stargreece.php
 
-#EXTINF:-1 group-title="ΠΑΝΕΛΛΑΔΙΚΑ"  tvg-id="maktv" tvg-logo="https://i.ibb.co/MN6YsJW/mak-tv-0ba38455.jpg" tvg-name="M.TV HD" tvg-website="https://watch.antennaplus.gr/#/" ,MAK TV
+#EXTINF:-1 group-title="ΠΑΝΕΛΛΑΔΙΚΑ"  tvg-id="mtv" tvg-logo="https://i.ibb.co/MN6YsJW/mak-tv-0ba38455.jpg" tvg-name="MAK TV" tvg-website="https://watch.antennaplus.gr/#/" ,MAK TV
 https://spark3.smart-tv-data.com/makHD/makHD/playlist.m3u8 
 
 #EXTINF:-1 tvg-id="action24" tvg-logo="https://i.imgur.com/Fsnz8GK.png", Action 24
@@ -125,9 +125,6 @@ https://web.onair-radio.eu/groovytv/groovytv/chunklist_w2146395179.m3u8
 
 #EXTINF:-1 tvg-id="NetMaxTV.gr" tvg-logo="https://i.imgur.com/ObjxuGj.jpg", NetMaxTV
 https://live.netmaxtv.com:8081/live/live/chunklist_w1335266248.m3u8
-
-#EXTINF:-1 tvg-id="mtv" tvg-logo="https://i.imgur.com/55NSQ50.png", Mak TV
-https://dlm34ll53zqql.cloudfront.net/out/v1/d4177931deff4c7ba994b8126d153d9f/maktv.m3u8
 
 #EXTINF:-1 tvg-id="CinemaTime.gr" tvg-logo="https://i.ibb.co/bJGz0h3/cine1.jpg", Cinema Time 1
 https://s1.cystream.net/live/34100/playlist.m3u8
