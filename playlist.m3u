@@ -52,6 +52,9 @@ https://anacon.org/app/chans/gr/ant1image.php
 http://l2.cloudskep.com/ant1cm2/abr/playlist.m3u8
 
 #EXTINF:-1 tvg-id="alpha" tvg-logo="https://i.imgur.com/6twzd38.png", AlphaTV
+https://alphatvlive2.siliconweb.com/alphatvlive/live_abr/playlist.m3u8
+
+#EXTINF:-1 tvg-id="alpha" tvg-logo="https://i.imgur.com/6twzd38.png", AlphaTV
 https://alphatvlive.siliconweb.com/1/Y2Rsd1lUcUVoajcv/UVdCN25h/hls/live/playlist.m3u
 
 #EXTINF:-1 tvg-id="alpha" tvg-logo="https://i.imgur.com/6twzd38.png", AlphaTV
