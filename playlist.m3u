@@ -132,6 +132,9 @@ https://kontralive.siliconweb.com/live/kontratv/playlist.m3u8
 #EXTINF:-1 tvg-id="tv100" tvg-logo="https://i.imgur.com/fh6ZaGP.png", TV 100
 https://live.fm100.gr/hls/tv100/1_2/index.m3u8
 
+#EXTINF:-1 tvg-id="tv100" tvg-logo="https://i.imgur.com/D7YqJig.png" group-title="GREEK PERIFEREIAKA", TV 100
+https://panel.gwebstream.eu:19360/tv100skg/720p.m3u8
+
 #EXTINF:-1 tvg-id="GroovyTV.gr" https://reloadplay.com/wp-content/uploads/2017/04/Groovy-3-150x48.png", Groovy TV
 https://web.onair-radio.eu/groovytv/groovytv/chunklist_w2146395179.m3u8
 
