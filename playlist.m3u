@@ -15,6 +15,9 @@ http://www.anacon.org/app/chans/gr/ert1s2image.php
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png", ERT1
 http://195.226.218.163/vid/ert1/playlist.m3u8
 
+#EXTINF:-1 group-title="VPN" tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png",ERT2
+https://ertflix-greece.siliconweb.com/mpegts/618618_2341557/master_mpegts.m3u8
+
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png",ERT2
 https://spark3.smart-tv-data.com/vid/ert2hd/playlist.m3u8
 
@@ -23,6 +26,9 @@ http://www.anacon.org/app/chans/gr/ert2s2image.php
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png", ERT2
 https://wow.anixa.tv/live/ert2/playlist.m3u8
+
+#EXTINF:-1 group-title="VPN" tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
+https://ertflix-greece.siliconweb.com/mpegts/618618_2341560/master_mpegts.m3u8
 
 #EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
 https://spark3.smart-tv-data.com/vid/ert3hd/playlist.m3u8
@@ -33,11 +39,17 @@ https://ertflix.akamaized.net/ertlive/ert3/clrdef24828n/playlist.m3u8
 #EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3 WEB
 http://www.anacon.org/app/chans/gr/ert3s2image.php
 
+#EXTINF:-1 group-title="VPN" tvg-id="ertnews" tvg-logo="https://i.imgur.com/XwLTzaF.jpg", ERT News
+https://ertflix.s.llnwi.net/ertlive/ertnews/default/index.m3u8
+
 #EXTINF:-1 tvg-id="ertnews" tvg-logo="https://i.imgur.com/XwLTzaF.jpg", ERT News
 https://ertflix.s.llnwi.net/ertlive/ertnews/default/index.m3u8
 
 #EXTINF:-1 tvg-id="ertnews" tvg-logo="https://i.imgur.com/XwLTzaF.jpg", ERT News
 https://ertflix.akamaized.net/ertlive/ertnews/default/playlist.m3u8
+
+#EXTINF:-1 group-title="VPN" tvg-id="ant1" tvg-logo="https://i.imgur.com/V1w22Or.png", Ant1
+https://lcdn.antennaplus.gr/r86d08d448885424196f6cd3ddc5d1489/eu-central-1/eu-central-1/6415884360001/profile_0/chunklist.m3u8
 
 #EXTINF:-1 tvg-id="ant1" tvg-logo="https://i.imgur.com/V1w22Or.png", Ant1
 https://lcdn.antennaplus.gr/r86d08d448885424196f6cd3ddc5d1489/eu-central-1/6415884360001/playlist_dvr.m3u8
