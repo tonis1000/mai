@@ -1,5 +1,8 @@
 #EXTM3U
 
+#EXTINF:-1 group-title="VPN" tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
+https://ertflix.ascdn.broadpeak.io/ertlive/ert1/clrdef24723b/index.m3u8
+
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
 https://spark3.smart-tv-data.com/ert1HD/ert1HD/playlist.m3u8
 
