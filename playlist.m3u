@@ -48,9 +48,6 @@ https://ertflix.s.llnwi.net/ertlive/ertnews/default/index.m3u8
 #EXTINF:-1 tvg-id="ertnews" tvg-logo="https://i.imgur.com/XwLTzaF.jpg", ERT News
 https://ertflix.akamaized.net/ertlive/ertnews/default/playlist.m3u8
 
-#EXTINF:-1 group-title="VPN" tvg-id="ant1" tvg-logo="https://i.imgur.com/V1w22Or.png", Ant1
-https://lcdn.antennaplus.gr/r86d08d448885424196f6cd3ddc5d1489/eu-central-1/eu-central-1/6415884360001/profile_0/chunklist.m3u8
-
 #EXTINF:-1 tvg-id="ant1" tvg-logo="https://i.imgur.com/V1w22Or.png", Ant1
 https://lcdn.antennaplus.gr/r86d08d448885424196f6cd3ddc5d1489/eu-central-1/6415884360001/playlist_dvr.m3u8
 
