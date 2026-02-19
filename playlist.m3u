@@ -90,6 +90,9 @@ https://spark3.smart-tv-data.com/megaHD/megaHD/playlist.m3u8
 #EXTINF:-1 tvg-id="mega" tvg-logo="https://i.ibb.co/f2rCKjh/mega.jpg", MEGA TV
 https://wow.anixa.tv/live/mega/chunklist_w302373799.m3u8
 
+#EXTINF:-1 tvg-id="mega" tvg-logo="https://i.ibb.co/f2rCKjh/mega.jpg", MEGA TV
+http://wow.anixa.tv/live/mega/playlist.m3u8
+
 #EXTINF:-1 tvg-id="mega" tvg-logo="https://i.ibb.co/f2rCKjh/mega.jpg", MEGA WEB
 https://www.lakatamia.tv/app/chans/gr/megaimage.php
 
