@@ -1,6 +1,9 @@
 #EXTM3U
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
+https://ert-ucdn.broadpeak-aas.com/bpk-tv/ERT1/default/index.m3u8
+
+#EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
 https://spark3.smart-tv-data.com/ert1HD/ert1HD/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
@@ -13,6 +16,9 @@ http://www.anacon.org/app/chans/gr/ert1s2image.php
 http://195.226.218.163/vid/ert1/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png",ERT2
+https://ert-ucdn.broadpeak-aas.com/bpk-tv/ERT2/default/index.m3u8
+
+#EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png",ERT2
 https://spark3.smart-tv-data.com/vid/ert2hd/playlist.m3u8
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png",ERT2 WEB
@@ -20,6 +26,9 @@ http://www.anacon.org/app/chans/gr/ert2s2image.php
 
 #EXTINF:-1 tvg-id="ert2" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/50/%CE%95%CE%A1%CE%A42.png", ERT2
 https://wow.anixa.tv/live/ert2/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
+https://ert-live.ascdn.broadpeak.io/bpk-tv/ERT3/default/index.m3u8
 
 #EXTINF:-1 tvg-id="ert3" tvg-logo="https://i.imgur.com/f2l9bDR.png", ERT3
 https://spark3.smart-tv-data.com/vid/ert3hd/playlist.m3u8
