@@ -1,6 +1,6 @@
 #EXTM3U
 
-#EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
+#EXTINF:-1 tvg-id="ΕΡΤ1.HD.gr" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
 https://ert-ucdn.broadpeak-aas.com/bpk-tv/ERT1/default/index.m3u8
 
 #EXTINF:-1 tvg-id="ert1" tvg-logo="https://i.imgur.com/slE8U5m.png",ERT1
