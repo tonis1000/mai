@@ -88,6 +88,9 @@ https://skai-live-back.siliconweb.com/media/cambria4/index.m3u8
 https://spark3.smart-tv-data.com/openHD/openHD/playlist.m3u8 
 
 #EXTINF:-1 tvg-id="open" tvg-logo="https://i.imgur.com/M6XG03v.png", Open TV
+https://liveopen.siliconweb.com/openTvLive/liveopen/chunks.m3u8
+
+#EXTINF:-1 tvg-id="open" tvg-logo="https://i.imgur.com/M6XG03v.png", Open TV
 https://liveopencloud.siliconweb.com/1/ZlRza2R6L2tFRnFJ/eWVLSlQx/hls/live/playlist.m3u8
 
 #EXTINF:-1 tvg-id="open" tvg-logo="https://i.imgur.com/M6XG03v.png", Open TV
